@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.messageNotice.MessageNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.messageNotice.MessageNoticeDO">
+            <id property="rId" column="R_ID" jdbcType="VARCHAR"/>
+            <result property="type" column="TYPE" jdbcType="VARCHAR"/>
+            <result property="readFlag" column="READ_FLAG" jdbcType="VARCHAR"/>
+            <result property="sender" column="SENDER" jdbcType="VARCHAR"/>
+            <result property="noticeWay" column="NOTICE_WAY" jdbcType="VARCHAR"/>
+            <result property="smsContent" column="SMS_CONTENT" jdbcType="VARCHAR"/>
+            <result property="feedbackFlag" column="FEEDBACK_FLAG" jdbcType="VARCHAR"/>
+            <result property="feedbackResult" column="FEEDBACK_RESULT" jdbcType="VARCHAR"/>
+            <result property="homepageType" column="HOMEPAGE_TYPE" jdbcType="VARCHAR"/>
+            <result property="title" column="TITLE" jdbcType="VARCHAR"/>
+            <result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+            <result property="fileInfo" column="FILE_INFO" jdbcType="VARCHAR"/>
+            <result property="org" column="ORG" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="UPDATE_TIME" jdbcType="VARCHAR"/>
+            <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+            <result property="url" column="URL" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        R_ID,TYPE,READ_FLAG,
+        SENDER,NOTICE_WAY,SMS_CONTENT,
+        FEEDBACK_FLAG,FEEDBACK_RESULT,HOMEPAGE_TYPE,
+        TITLE,CONTENT,FILE_INFO,
+        ORG,CREATE_TIME,UPDATE_TIME,
+        FILE_NAME,URL,SQL
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_MESSAGENOTICE
+        where  R_ID = #{rId,jdbcType=VARCHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_MESSAGENOTICE
+        where  R_ID = #{rId,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="R_ID" keyProperty="rId" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageNoticeDO" useGeneratedKeys="true">
+        insert into SYS_MESSAGENOTICE
+        ( R_ID,TYPE,READ_FLAG
+        ,SENDER,NOTICE_WAY,SMS_CONTENT
+        ,FEEDBACK_FLAG,FEEDBACK_RESULT,HOMEPAGE_TYPE
+        ,TITLE,CONTENT,FILE_INFO
+        ,ORG,CREATE_TIME,UPDATE_TIME
+        ,FILE_NAME,URL,SQL
+        )
+        values (#{rId,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{readFlag,jdbcType=VARCHAR}
+        ,#{sender,jdbcType=VARCHAR},#{noticeWay,jdbcType=VARCHAR},#{smsContent,jdbcType=VARCHAR}
+        ,#{feedbackFlag,jdbcType=VARCHAR},#{feedbackResult,jdbcType=VARCHAR},#{homepageType,jdbcType=VARCHAR}
+        ,#{title,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{fileInfo,jdbcType=VARCHAR}
+        ,#{org,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{updateTime,jdbcType=VARCHAR}
+        ,#{fileName,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{sql,jdbcType=CLOB}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="R_ID" keyProperty="rId" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageNoticeDO" useGeneratedKeys="true">
+        insert into SYS_MESSAGENOTICE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="rId != null">R_ID,</if>
+                <if test="type != null">TYPE,</if>
+                <if test="readFlag != null">READ_FLAG,</if>
+                <if test="sender != null">SENDER,</if>
+                <if test="noticeWay != null">NOTICE_WAY,</if>
+                <if test="smsContent != null">SMS_CONTENT,</if>
+                <if test="feedbackFlag != null">FEEDBACK_FLAG,</if>
+                <if test="feedbackResult != null">FEEDBACK_RESULT,</if>
+                <if test="homepageType != null">HOMEPAGE_TYPE,</if>
+                <if test="title != null">TITLE,</if>
+                <if test="content != null">CONTENT,</if>
+                <if test="fileInfo != null">FILE_INFO,</if>
+                <if test="org != null">ORG,</if>
+                <if test="createTime != null">CREATE_TIME,</if>
+                <if test="updateTime != null">UPDATE_TIME,</if>
+                <if test="fileName != null">FILE_NAME,</if>
+                <if test="url != null">URL,</if>
+                <if test="sql != null">SQL,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="rId != null">#{rId,jdbcType=VARCHAR},</if>
+                <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+                <if test="readFlag != null">#{readFlag,jdbcType=VARCHAR},</if>
+                <if test="sender != null">#{sender,jdbcType=VARCHAR},</if>
+                <if test="noticeWay != null">#{noticeWay,jdbcType=VARCHAR},</if>
+                <if test="smsContent != null">#{smsContent,jdbcType=VARCHAR},</if>
+                <if test="feedbackFlag != null">#{feedbackFlag,jdbcType=VARCHAR},</if>
+                <if test="feedbackResult != null">#{feedbackResult,jdbcType=VARCHAR},</if>
+                <if test="homepageType != null">#{homepageType,jdbcType=VARCHAR},</if>
+                <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+                <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+                <if test="fileInfo != null">#{fileInfo,jdbcType=VARCHAR},</if>
+                <if test="org != null">#{org,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=VARCHAR},</if>
+                <if test="updateTime != null">#{updateTime,jdbcType=VARCHAR},</if>
+                <if test="fileName != null">#{fileName,jdbcType=VARCHAR},</if>
+                <if test="url != null">#{url,jdbcType=VARCHAR},</if>
+                <if test="sql != null">#{sql,jdbcType=CLOB},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageNoticeDO">
+        update SYS_MESSAGENOTICE
+        <set>
+                <if test="type != null">
+                    TYPE = #{type,jdbcType=VARCHAR},
+                </if>
+                <if test="readFlag != null">
+                    READ_FLAG = #{readFlag,jdbcType=VARCHAR},
+                </if>
+                <if test="sender != null">
+                    SENDER = #{sender,jdbcType=VARCHAR},
+                </if>
+                <if test="noticeWay != null">
+                    NOTICE_WAY = #{noticeWay,jdbcType=VARCHAR},
+                </if>
+                <if test="smsContent != null">
+                    SMS_CONTENT = #{smsContent,jdbcType=VARCHAR},
+                </if>
+                <if test="feedbackFlag != null">
+                    FEEDBACK_FLAG = #{feedbackFlag,jdbcType=VARCHAR},
+                </if>
+                <if test="feedbackResult != null">
+                    FEEDBACK_RESULT = #{feedbackResult,jdbcType=VARCHAR},
+                </if>
+                <if test="homepageType != null">
+                    HOMEPAGE_TYPE = #{homepageType,jdbcType=VARCHAR},
+                </if>
+                <if test="title != null">
+                    TITLE = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="content != null">
+                    CONTENT = #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="fileInfo != null">
+                    FILE_INFO = #{fileInfo,jdbcType=VARCHAR},
+                </if>
+                <if test="org != null">
+                    ORG = #{org,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+                </if>
+                <if test="updateTime != null">
+                    UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+                </if>
+                <if test="fileName != null">
+                    FILE_NAME = #{fileName,jdbcType=VARCHAR},
+                </if>
+                <if test="url != null">
+                    URL = #{url,jdbcType=VARCHAR},
+                </if>
+                <if test="sql != null">
+                    SQL = #{sql,jdbcType=CLOB},
+                </if>
+        </set>
+        where   R_ID = #{rId,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageNoticeDO">
+        update SYS_MESSAGENOTICE
+        set 
+            TYPE =  #{type,jdbcType=VARCHAR},
+            READ_FLAG =  #{readFlag,jdbcType=VARCHAR},
+            SENDER =  #{sender,jdbcType=VARCHAR},
+            NOTICE_WAY =  #{noticeWay,jdbcType=VARCHAR},
+            SMS_CONTENT =  #{smsContent,jdbcType=VARCHAR},
+            FEEDBACK_FLAG =  #{feedbackFlag,jdbcType=VARCHAR},
+            FEEDBACK_RESULT =  #{feedbackResult,jdbcType=VARCHAR},
+            HOMEPAGE_TYPE =  #{homepageType,jdbcType=VARCHAR},
+            TITLE =  #{title,jdbcType=VARCHAR},
+            CONTENT =  #{content,jdbcType=VARCHAR},
+            FILE_INFO =  #{fileInfo,jdbcType=VARCHAR},
+            ORG =  #{org,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=VARCHAR},
+            UPDATE_TIME =  #{updateTime,jdbcType=VARCHAR},
+            FILE_NAME =  #{fileName,jdbcType=VARCHAR},
+            URL =  #{url,jdbcType=VARCHAR},
+            SQL =  #{sql,jdbcType=CLOB}
+        where   R_ID = #{rId,jdbcType=VARCHAR} 
+    </update>
+
+    <select id="selectPageByParam" parameterType="java.lang.String" resultType="com.joyin.fyzg.wyy.vo.MessageNotice.MessageNoticeVO">
+          select t.*, f.user_o_name, h.cust_o_name as financier_name
+          from SYS_MESSAGENOTICE t
+          left join SYS_RBAC_USER f
+            on t.sender = f.user_o_code
+          left join DW_CUST_FINANCIER h
+            on f.financier = h.cust_o_code
+         where 1 = 1
+        <if test="title != null and title != ''">
+            AND t.title LIKE '%' || #{title,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="userOName != null and userOName != ''">
+            AND f.user_o_name LIKE '%' || #{userOName,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="type != null and type != ''">
+            AND t.type = #{type,jdbcType=VARCHAR}
+        </if>
+         order by t.update_time desc
+    </select>
+</mapper>

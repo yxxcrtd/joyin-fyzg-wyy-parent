@@ -1,0 +1,52 @@
+package ${packageName}.controller${modulePackageName};
+
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.joyin.fyzg.common.RestResponse;
+import com.joyin.fyzg.common.PageConditionRequest;
+import ${packageName}.entity${modulePackageName}.${ClassName}DO;
+import ${packageName}.service${modulePackageName}.${ClassName}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("${className}")
+@Slf4j
+public class ${ClassName}Controller   {
+	@Autowired
+	${ClassName}Service ${className}Service;
+
+	@PostMapping("insert${ClassName}")
+	public RestResponse insert${ClassName}(@RequestBody ${ClassName}DO ${className}DO) {
+		return RestResponse.transMethodResponse(${className}Service.insert${ClassName}(${className}DO));
+	}
+
+	@PostMapping("update${ClassName}ById")
+	public RestResponse update${ClassName}ById(@RequestBody ${ClassName}DO ${className}DO) {
+		return RestResponse.transMethodResponse(${className}Service.update${ClassName}ById(${className}DO));
+	}
+
+	@DeleteMapping("delete${ClassName}ById")
+	public RestResponse delete${ClassName}ById(@RequestParam("${pkColumn.getJavaField()}") ${pkColumn.getJavaType()} ${pkColumn.getJavaField()}) {
+		return RestResponse.transMethodResponse(${className}Service.delete${ClassName}ById(${pkColumn.getJavaField()}));
+	}
+
+	@GetMapping("get${ClassName}ById")
+	public RestResponse get${ClassName}ById(@RequestParam("${pkColumn.getJavaField()}") ${pkColumn.getJavaType()} ${pkColumn.getJavaField()}) {
+		return RestResponse.success(${className}Service.get${ClassName}ById(${pkColumn.getJavaField()}));
+	}
+
+	@GetMapping("listAll")
+	public RestResponse<List<${ClassName}DO>> listAll() {
+		return RestResponse.success(${className}Service.listAll());
+	}
+
+	@PostMapping("list${ClassName}PageByCondition")
+	public RestResponse<IPage<${ClassName}DO>> list${ClassName}PageByCondition(@RequestBody PageConditionRequest<${ClassName}DO> pageConditionRequest) {
+		return RestResponse.success(${className}Service.list${ClassName}PageByCondition(pageConditionRequest));
+	}
+
+}

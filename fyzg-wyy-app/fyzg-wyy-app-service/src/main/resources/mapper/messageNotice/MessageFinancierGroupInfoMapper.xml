@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.messageNotice.MessageFinancierGroupInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.messageNotice.MessageFinancierGroupInfoDO">
+            <id property="rId" column="R_ID" jdbcType="DECIMAL"/>
+            <result property="groupName" column="GROUP_NAME" jdbcType="VARCHAR"/>
+            <result property="groupCode" column="GROUP_CODE" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="UPDATE_TIME" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        R_ID,GROUP_NAME,GROUP_CODE,
+        CREATE_TIME,UPDATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_MESSAGE_FINANCIER_GROUP_INFO
+        where  R_ID = #{rId,jdbcType=DECIMAL} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_MESSAGE_FINANCIER_GROUP_INFO
+        where  R_ID = #{rId,jdbcType=DECIMAL} 
+    </delete>
+    <insert id="insert" keyColumn="R_ID" keyProperty="rId" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageFinancierGroupInfoDO" useGeneratedKeys="true">
+        insert into SYS_MESSAGE_FINANCIER_GROUP_INFO
+        ( GROUP_NAME,GROUP_CODE
+        ,CREATE_TIME,UPDATE_TIME)
+        values (#{groupName,jdbcType=VARCHAR},#{groupCode,jdbcType=VARCHAR}
+        ,#{createTime,jdbcType=VARCHAR},#{updateTime,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="R_ID" keyProperty="rId" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageFinancierGroupInfoDO" useGeneratedKeys="true">
+        insert into SYS_MESSAGE_FINANCIER_GROUP_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="rId != null">R_ID,</if>
+                <if test="groupName != null">GROUP_NAME,</if>
+                <if test="groupCode != null">GROUP_CODE,</if>
+                <if test="createTime != null">CREATE_TIME,</if>
+                <if test="updateTime != null">UPDATE_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="rId != null">#{rId,jdbcType=DECIMAL},</if>
+                <if test="groupName != null">#{groupName,jdbcType=VARCHAR},</if>
+                <if test="groupCode != null">#{groupCode,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=VARCHAR},</if>
+                <if test="updateTime != null">#{updateTime,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageFinancierGroupInfoDO">
+        update SYS_MESSAGE_FINANCIER_GROUP_INFO
+        <set>
+                <if test="groupName != null">
+                    GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+                </if>
+                <if test="groupCode != null">
+                    GROUP_CODE = #{groupCode,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+                </if>
+                <if test="updateTime != null">
+                    UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   R_ID = #{rId,jdbcType=DECIMAL} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.messageNotice.MessageFinancierGroupInfoDO">
+        update SYS_MESSAGE_FINANCIER_GROUP_INFO
+        set 
+            GROUP_NAME =  #{groupName,jdbcType=VARCHAR},
+            GROUP_CODE =  #{groupCode,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=VARCHAR},
+            UPDATE_TIME =  #{updateTime,jdbcType=VARCHAR}
+        where   R_ID = #{rId,jdbcType=DECIMAL} 
+    </update>
+
+</mapper>

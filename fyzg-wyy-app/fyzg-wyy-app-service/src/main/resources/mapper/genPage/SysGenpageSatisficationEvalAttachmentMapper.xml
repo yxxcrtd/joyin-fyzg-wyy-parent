@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.genPage.SysGenpageSatisficationEvalAttachmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEvalAttachment">
+            <id property="id" column="ID" jdbcType="VARCHAR"/>
+            <result property="pageId" column="PAGE_ID" jdbcType="VARCHAR"/>
+            <result property="userId" column="USER_ID" jdbcType="VARCHAR"/>
+            <result property="attachmentId" column="ATTACHMENT_ID" jdbcType="VARCHAR"/>
+            <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+            <result property="filePath" column="FILE_PATH" jdbcType="VARCHAR"/>
+            <result property="fileType" column="FILE_TYPE" jdbcType="VARCHAR"/>
+            <result property="fileSize" column="FILE_SIZE" jdbcType="DECIMAL"/>
+            <result property="uploader" column="UPLOADER" jdbcType="VARCHAR"/>
+            <result property="uploadTime" column="UPLOAD_TIME" jdbcType="VARCHAR"/>
+            <result property="remark" column="REMARK" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,PAGE_ID,USER_ID,
+        ATTACHMENT_ID,FILE_NAME,FILE_PATH,
+        FILE_TYPE,FILE_SIZE,UPLOADER,
+        UPLOAD_TIME,REMARK
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        where  ID = #{id,jdbcType=VARCHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        where  ID = #{id,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEvalAttachment" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        ( ID,PAGE_ID,USER_ID
+        ,ATTACHMENT_ID,FILE_NAME,FILE_PATH
+        ,FILE_TYPE,FILE_SIZE,UPLOADER
+        ,UPLOAD_TIME,REMARK)
+        values (#{id,jdbcType=VARCHAR},#{pageId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR}
+        ,#{attachmentId,jdbcType=VARCHAR},#{fileName,jdbcType=VARCHAR},#{filePath,jdbcType=VARCHAR}
+        ,#{fileType,jdbcType=VARCHAR},#{fileSize,jdbcType=DECIMAL},#{uploader,jdbcType=VARCHAR}
+        ,#{uploadTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEvalAttachment" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID,</if>
+                <if test="pageId != null">PAGE_ID,</if>
+                <if test="userId != null">USER_ID,</if>
+                <if test="attachmentId != null">ATTACHMENT_ID,</if>
+                <if test="fileName != null">FILE_NAME,</if>
+                <if test="filePath != null">FILE_PATH,</if>
+                <if test="fileType != null">FILE_TYPE,</if>
+                <if test="fileSize != null">FILE_SIZE,</if>
+                <if test="uploader != null">UPLOADER,</if>
+                <if test="uploadTime != null">UPLOAD_TIME,</if>
+                <if test="remark != null">REMARK,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=VARCHAR},</if>
+                <if test="pageId != null">#{pageId,jdbcType=VARCHAR},</if>
+                <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+                <if test="attachmentId != null">#{attachmentId,jdbcType=VARCHAR},</if>
+                <if test="fileName != null">#{fileName,jdbcType=VARCHAR},</if>
+                <if test="filePath != null">#{filePath,jdbcType=VARCHAR},</if>
+                <if test="fileType != null">#{fileType,jdbcType=VARCHAR},</if>
+                <if test="fileSize != null">#{fileSize,jdbcType=DECIMAL},</if>
+                <if test="uploader != null">#{uploader,jdbcType=VARCHAR},</if>
+                <if test="uploadTime != null">#{uploadTime,jdbcType=VARCHAR},</if>
+                <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEvalAttachment">
+        update SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        <set>
+                <if test="pageId != null">
+                    PAGE_ID = #{pageId,jdbcType=VARCHAR},
+                </if>
+                <if test="userId != null">
+                    USER_ID = #{userId,jdbcType=VARCHAR},
+                </if>
+                <if test="attachmentId != null">
+                    ATTACHMENT_ID = #{attachmentId,jdbcType=VARCHAR},
+                </if>
+                <if test="fileName != null">
+                    FILE_NAME = #{fileName,jdbcType=VARCHAR},
+                </if>
+                <if test="filePath != null">
+                    FILE_PATH = #{filePath,jdbcType=VARCHAR},
+                </if>
+                <if test="fileType != null">
+                    FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+                </if>
+                <if test="fileSize != null">
+                    FILE_SIZE = #{fileSize,jdbcType=DECIMAL},
+                </if>
+                <if test="uploader != null">
+                    UPLOADER = #{uploader,jdbcType=VARCHAR},
+                </if>
+                <if test="uploadTime != null">
+                    UPLOAD_TIME = #{uploadTime,jdbcType=VARCHAR},
+                </if>
+                <if test="remark != null">
+                    REMARK = #{remark,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEvalAttachment">
+        update SYS_GENPAGE_SATISFICATION_EVAL_ATTACHMENT
+        set 
+            PAGE_ID =  #{pageId,jdbcType=VARCHAR},
+            USER_ID =  #{userId,jdbcType=VARCHAR},
+            ATTACHMENT_ID =  #{attachmentId,jdbcType=VARCHAR},
+            FILE_NAME =  #{fileName,jdbcType=VARCHAR},
+            FILE_PATH =  #{filePath,jdbcType=VARCHAR},
+            FILE_TYPE =  #{fileType,jdbcType=VARCHAR},
+            FILE_SIZE =  #{fileSize,jdbcType=DECIMAL},
+            UPLOADER =  #{uploader,jdbcType=VARCHAR},
+            UPLOAD_TIME =  #{uploadTime,jdbcType=VARCHAR},
+            REMARK =  #{remark,jdbcType=VARCHAR}
+        where   ID = #{id,jdbcType=VARCHAR} 
+    </update>
+</mapper>

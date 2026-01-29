@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fyzg-wyy-app</artifactId>
+        <groupId>com.joyin.fyzg</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>fyzg-wyy-app-service</artifactId>
+
+    <properties>
+        <jexl3.version>3.0</jexl3.version>
+        <BES.version>9.5.5.003</BES.version>
+    </properties>
+
+    <dependencies>
+        <!-- cas客户端 begin -->
+        <dependency>
+            <groupId>org.jasig.cas.client</groupId>
+            <artifactId>cas-client-core</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <!-- cas客户端 end -->
+        <!-- BES begin-->
+        <dependency>
+            <groupId>com.bes.appserver</groupId>
+            <artifactId>bes-lite-spring-boot-1.x-starter</artifactId>
+            <version>${BES.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bes.appserver</groupId>
+            <artifactId>bes-gmssl</artifactId>
+            <version>${BES.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bes.appserver</groupId>
+            <artifactId>bes-jasper</artifactId>
+            <version>${BES.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bes.appserver</groupId>
+            <artifactId>bes-jdbcra</artifactId>
+            <version>${BES.version}</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.bes.appserver</groupId>-->
+        <!--<artifactId>bes-jdbcra-spring-boot-starter</artifactId>-->
+        <!--<version>${BES.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>com.bes.appserver</groupId>-->
+        <!--<artifactId>bes-webapp-compressor</artifactId>-->
+        <!--<version>${BES.version}</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.bes.appserver</groupId>
+            <artifactId>bes-websocket</artifactId>
+            <version>${BES.version}</version>
+        </dependency>
+        <!-- BES end -->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>1.3.2.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-jxpath</groupId>
+                    <artifactId>commons-jxpath</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- web依赖 begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- web依赖 end-->
+        <!-- 内部的common及api项目 begin-->
+        <dependency>
+            <groupId>com.joyin.fyzg</groupId>
+            <artifactId>fyzg-wyy-common-service</artifactId>
+            <version>${fyzg.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.joyin.fyzg</groupId>
+            <artifactId>fyzg-wyy-app-api</artifactId>
+            <version>${fyzg.version}</version>
+        </dependency>
+        <!-- 内部的common及api项目 end-->
+        <!-- 测试依赖 begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- 测试依赖 end-->
+        <!--服务监控 begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--服务监控 end-->
+        <!--导入配置文件处理器，配置文件进行绑定就会有提示 begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--导入配置文件处理器，配置文件进行绑定就会有提示 end-->
+        <!--支持热部署 begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.15.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--支持热部署 end-->
+        <!-- Axis 1.4 -->
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- 其他可能需要的依赖 -->
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <!--打包jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <!--不打包资源文件 -->
+                    <excludes>
+                        <exclude>lib/**</exclude>
+                        <exclude>bin/**</exclude>
+                        <exclude>mapper/**</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.xml</exclude>
+                    </excludes>
+                    <!--
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            // MANIFEST.MF 中 Class-Path 加入前缀，不需要配置，在外部命令行指定
+                            <classpathPrefix>lib/</classpathPrefix>
+                            // jar包不包含唯一版本标识
+                            <useUniqueVersions>false</useUniqueVersions>
+    `                       // 指定入口类,如果程序里只有一个main方法就建议不要手动配置
+                            <mainClass>org.woodwhale.king.KingApplication</mainClass>
+                            </manifest>
+                        <manifestEntries>
+                        // MANIFEST.MF 中 Class-Path 加入资源文件目录，不需要配置，在外部命令行指
+                        <Class-Path>./resources/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    -->
+
+                    <!--
+                        生成到 target 目录下，
+                        也可以放到指定目录，例如： ${project.build.directory}/boot
+                    -->
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <!--拷贝依赖 copy-dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--拷贝资源文件 copy-resources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <excludes>
+                                        <!--排除bin目录assembly.xml及JRebel生成的两个配置文件-->
+                                        <exclude>bin/**</exclude>
+                                        <exclude>assembly.xml</exclude>
+                                        <exclude>rebel.xml</exclude>
+                                        <exclude>rebel-remote.xml</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+               spring boot repackage，
+               依赖 maven-jar-plugin 打包的jar包
+               重新打包成 spring boot的jar包
+           -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 包含本地 jar 依赖 -->
+                    <includeSystemScope>true</includeSystemScope>
+                    <!-- 重写包含依赖，包含不存在的依赖，jar里没有pom里的依赖 -->
+                    <includes>
+                        <include>
+                            <groupId>null</groupId>
+                            <artifactId>null</artifactId>
+                        </include>
+                    </includes>
+                    <layout>ZIP</layout>
+                    <!-- 使用外部配置文件，jar包里没有资源文件 -->
+                    <addResources>true</addResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <!--<configuration>
+                            &lt;!&ndash;
+                            配置jar包特殊标识 配置后，保留原文件，
+                            生成新文件 *-run.jar 配置jar包特殊标识 不配置，
+                            原文件命名为 *.jar.original，生成新文件 *.jar
+                            &ndash;&gt;
+                            <classifier>run</classifier>
+                        </configuration>-->
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 打包发布时，跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- 使用assembly打zip包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <!-- assembly配置文件位置 -->
+                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>../../output</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 使用deploy发布时忽略 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven-deploy-plugin.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

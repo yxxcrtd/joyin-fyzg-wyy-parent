@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yourcompany.mapper.UserApplyAttachmentMapper">
+
+    <!-- 查询某申请单的附件 -->
+    <select id="selectByApplyId" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyAttachmentDO">
+        SELECT
+            ID, APPLY_ID, FILE_NAME, FILE_PATH, FILE_TYPE,
+            FILE_SIZE, UPLOADER, UPLOAD_TIME, REMARK, CREATE_TIME
+        FROM SYS_RBAC_USER_APPLY_ATTACHMENT
+        WHERE APPLY_ID = #{applyId}
+        ORDER BY CREATE_TIME
+    </select>
+
+    <update id="updateApplyIdByAttachmentIds">
+        UPDATE SYS_RBAC_USER_APPLY_ATTACHMENT
+        SET APPLY_ID = #{applyId}
+        WHERE ATTACHMENT_ID IN
+        <foreach collection="attachmentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 根据 APPLY_ID 删除附件 -->
+    <delete id="deleteByApplyId">
+        DELETE FROM SYS_RBAC_USER_APPLY_ATTACHMENT
+        WHERE APPLY_ID = #{applyId}
+    </delete>
+
+    <!-- 批量删除多个 APPLY_ID 的附件（可选） -->
+    <delete id="deleteByApplyIds">
+        DELETE FROM SYS_RBAC_USER_APPLY_ATTACHMENT
+        WHERE APPLY_ID IN
+        <foreach collection="applyIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

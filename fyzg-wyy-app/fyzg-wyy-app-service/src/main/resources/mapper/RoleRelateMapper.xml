@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.rbac.RoleRelateMapper">
+    <!-- *********************菜单相关的********************* -->
+    <delete id="deleteRoleRelateRoleToMenu4ModuleAndPage">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND (
+          (T.r_type = #{moduleRType}
+            <!-- 集合为空则不设此条件 -->
+            <if test="moduleCodeList != null and moduleCodeList.size > 0">
+                AND T.R_CODE1 NOT IN
+                <foreach collection="moduleCodeList" item="moduleCode" index="index" close=")" open="(" separator=",">
+                    #{moduleCode}
+                </foreach>
+            </if>
+            AND EXISTS (SELECT 1
+                FROM SYS_RBAC_MENU_MODULE t1
+                WHERE t1.bus_type = #{busCode}
+                AND t1.r_id = T.R_CODE1)
+            )
+          OR
+          (T.r_type = #{pageRType}
+            <!-- 集合为空则不设此条件 -->
+            <if test="pageCodeList != null and pageCodeList.size > 0">
+                AND
+                T.R_CODE1 NOT IN
+                <foreach collection="pageCodeList" item="pageCode" index="index" close=")" open="(" separator=",">
+                    #{pageCode}
+                </foreach>
+            </if>
+            AND EXISTS (SELECT 1
+                    FROM SYS_RBAC_MENU_PAGE t1
+                    WHERE t1.bus_type = #{busCode}
+                    AND t1.r_id = T.R_CODE1)
+            )
+        )
+    </delete>
+    <insert id="insertRoleRelateRoleToMenu4ModuleAndPage">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval,A.* from (
+            select *
+            from (
+                <foreach collection="rCode1MapList" item="map" index="index" close=")" open="(" separator="union">
+                    select #{map.type} AS r_type,#{roleCode} as role_code,#{map.code} as r_code1
+                    from dual
+                </foreach>) A
+            where not exists (select 1
+            from SYS_RBAC_ROLE_RELATE B
+            where B.R_TYPE = A.R_TYPE
+            AND B.ROLE_CODE = A.ROLE_CODE
+            AND B.R_CODE1 = A.R_CODE1)
+        ) A
+    </insert>
+    <delete id="deleteRoleRelateRoleToMenu4PageActionAndRequest">
+        <![CDATA[
+        DELETE FROM SYS_RBAC_ROLE_RELATE A
+        WHERE A.ROLE_CODE = #{roleCode}
+              AND A.R_TYPE IN (#{pageActionRType}, #{pageRequestRType})
+              AND NOT EXISTS (select 1
+                              from SYS_RBAC_ROLE_RELATE B
+                              where B.R_TYPE = #{pageRType}
+                                    AND B.ROLE_CODE = A.ROLE_CODE
+                                    AND B.R_CODE1 = A.R_CODE1)
+        ]]>
+    </delete>
+    <insert id="insertRoleRelateMenu4PageToRole">
+        <![CDATA[
+            insert into SYS_RBAC_ROLE_RELATE
+              (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+              select S_SYS_RBAC_ROLE_RELATE.nextval, A.*
+                from (select #{pageRType} AS r_type,
+                             #{roleCode}  as role_code,
+                             #{pageCode}  as r_code1
+                        from dual
+                      union
+                      select #{moduleRType} AS r_type,
+                             #{roleCode} as role_code,
+                             to_char(R_ID) as r_code1
+                        from SYS_RBAC_MENU_MODULE
+                       start with R_ID = (select MDL_ID
+                                            from SYS_RBAC_MENU_PAGE
+                                           where R_ID = #{pageCode})
+                      connect by prior P_MDL_ID = R_ID) A
+        ]]>
+    </insert>
+    <!-- *********************用户相关的********************* -->
+    <!--角色->用户方向的数据删除，指定角色代码的情况下，不在用户列表中的删除掉-->
+    <delete id="deleteRoleRelate4RoleToUser">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND (T.r_type = #{userRType}
+            <!-- 集合为空则不设此条件 -->
+            <if test="userCodeList != null and userCodeList.size > 0">
+                AND T.R_CODE1 NOT IN
+                <foreach collection="userCodeList" item="userCode" index="index" close=")" open="(" separator=",">
+                    #{userCode}
+                </foreach>
+            </if>
+            )
+    </delete>
+    <!--批量插入角色关联用户的数据，指定的具体某个角色，用户代码是多个形成的集合-->
+    <insert id="insertRoleRelate4RoleToUser">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+            select *
+            from (
+                <foreach collection="userCodeList" item="userCode" index="index" close=")" open="(" separator="union">
+                    select #{userRType} AS r_type,#{roleCode} as role_code,#{userCode} as r_code1
+                    from dual
+                </foreach>) A
+            where not exists (select 1
+            from SYS_RBAC_ROLE_RELATE B
+            where B.R_TYPE = A.R_TYPE
+            AND B.ROLE_CODE = A.ROLE_CODE
+            AND B.R_CODE1 = A.R_CODE1)
+        ) A
+    </insert>
+    <!--用户->角色方向的数据删除，指定用户代码的情况下，不在角色列表中的删除掉-->
+    <delete id="deleteRoleRelate4UserToRole">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.R_CODE1 = #{userCode}
+        AND (T.r_type = #{userRType}
+        <!-- 集合为空则不设此条件 -->
+        <!--<if test="roleCodeList != null and roleCodeList.size > 0">-->
+            <!--AND T.ROLE_CODE NOT IN-->
+            <!--<foreach collection="roleCodeList" item="roleCode" index="index" close=")" open="(" separator=",">-->
+                <!--#{roleCode}-->
+            <!--</foreach>-->
+        <!--</if>-->
+        )
+    </delete>
+    <!--批量插入角色关联流程环节的数据，指定的具体某个用户代码，角色代码是多个形成的集合-->
+    <insert id="insertRoleRelate4UserToRole">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+        select *
+        from (
+        <foreach collection="roleCodeList" item="roleCode" index="index" close=")" open="(" separator="union">
+            select #{userRType} AS r_type,#{roleCode} as role_code,#{userCode} as r_code1
+            from dual
+        </foreach>) A
+        where not exists (select 1
+        from SYS_RBAC_ROLE_RELATE B
+        where B.R_TYPE = A.R_TYPE
+        AND B.ROLE_CODE = A.ROLE_CODE
+        AND B.R_CODE1 = A.R_CODE1)
+        ) A
+    </insert>
+    <!-- *********************流程相关的********************* -->
+    <!--角色->流程环节方向的数据删除，指定角色代码的情况下，不在流程环节列表中的删除掉-->
+    <delete id="deleteRoleRelate4RoleToWf">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND (T.r_type = #{wfRType}
+        <!-- 集合为空则不设此条件 -->
+        <if test="wfCodeList != null and wfCodeList.size > 0">
+            AND T.R_CODE1 NOT IN
+            <foreach collection="wfCodeList" item="wfCode" index="index" close=")" open="(" separator=",">
+                #{wfCode}
+            </foreach>
+        </if>
+        )
+    </delete>
+    <!--批量插入角色关联流程环节的数据，指定的具体某个角色，流程环节代码是多个形成的集合-->
+    <insert id="insertRoleRelate4RoleToWf">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+        select *
+        from (
+        <foreach collection="wfCodeList" item="wfCode" index="index" close=")" open="(" separator="union">
+            select #{wfRType} AS r_type,#{roleCode} as role_code,#{wfCode} as r_code1
+            from dual
+        </foreach>) A
+        where not exists (select 1
+        from SYS_RBAC_ROLE_RELATE B
+        where B.R_TYPE = A.R_TYPE
+        AND B.ROLE_CODE = A.ROLE_CODE
+        AND B.R_CODE1 = A.R_CODE1)
+        ) A
+    </insert>
+    <!--流程环节->角色方向的数据删除，指定流程环节代码的情况下，不在角色列表中的删除掉-->
+    <delete id="deleteRoleRelate4WfToRole">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.R_CODE1 = #{wfCode}
+        AND (T.r_type = #{wfRType}
+        <!-- 集合为空则不设此条件 -->
+        <if test="roleCodeList != null and roleCodeList.size > 0">
+            AND T.ROLE_CODE NOT IN
+            <foreach collection="roleCodeList" item="roleCode" index="index" close=")" open="(" separator=",">
+                #{roleCode}
+            </foreach>
+        </if>
+        )
+    </delete>
+    <!--批量插入角色关联流程环节的数据，指定的具体某个流程环节代码，角色代码是多个形成的集合-->
+    <insert id="insertRoleRelate4WfToRole">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+        select *
+        from (
+        <foreach collection="roleCodeList" item="roleCode" index="index" close=")" open="(" separator="union">
+            select #{wfRType} AS r_type,#{roleCode} as role_code,#{wfCode} as r_code1
+            from dual
+        </foreach>) A
+        where not exists (select 1
+        from SYS_RBAC_ROLE_RELATE B
+        where B.R_TYPE = A.R_TYPE
+        AND B.ROLE_CODE = A.ROLE_CODE
+        AND B.R_CODE1 = A.R_CODE1)
+        ) A
+    </insert>
+    <!-- *********************文档相关的********************* -->
+    <!--角色->文档目录方向的数据删除，指定角色代码的情况下，不在文档目录列表中的删除掉-->
+    <delete id="deleteRoleRelate4RoleToCa">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND T.r_type = #{wfRType}
+    </delete>
+    <!--批量插入角色关联文档目录的数据，指定的具体某个角色，文档目录代码是多个形成的集合-->
+    <insert id="insertRoleRelate4RoleToCa">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1, R_CODE2, R_CODE3, R_CODE4, R_CODE5)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+        <foreach collection="docList" item="item" index="index" close=")" open="(" separator="union">
+            select #{wfRType} AS r_type,#{roleCode} as role_code,#{item.catId} as r_code1,#{item.catAttr} as r_code2,#{item.arcAuth} as r_code3,#{item.annAuth} as r_code4,#{item.annType} as r_code5
+            from dual
+        </foreach>) A
+    </insert>
+    <!-- *********************桌面相关的********************* -->
+    <!--角色->-->
+    <delete id="deleteRoleRelate4RoleToDesktop">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND T.r_type = #{desktopRType}
+    </delete>
+    <!--批量插入角色关联文档目录的数据，指定的具体某个角色，文档目录代码是多个形成的集合-->
+    <insert id="insertRoleRelate4RoleToDesktop">
+        insert into SYS_RBAC_ROLE_RELATE
+        (R_ID, R_TYPE, ROLE_CODE, R_CODE1)
+        select S_SYS_RBAC_ROLE_RELATE.nextval, A.* from (
+        <foreach collection="blockCodeList" item="item" index="index" close=")" open="(" separator="union">
+            select #{desktopRType} AS r_type,#{roleCode} as role_code,#{item} as r_code1
+            from dual
+        </foreach>) A
+    </insert>
+
+    <!--根据userCode查询其关联的桌面组件-->
+    <select id="listComponentByUserCodeAndType" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct R_CODE1
+        from SYS_RBAC_ROLE_RELATE
+        where  R_TYPE = #{type} and ROLE_CODE in
+                                    (select ROLE_CODE from SYS_RBAC_ROLE_RELATE where R_CODE1 = #{userCode} )
+    </select>
+    <!-- *********************数据权限相关的********************* -->
+    <select id="listRoleRelateDataAuToRole" parameterType="java.lang.String" resultType="java.lang.String">
+      select data_au from sys_rbac_role where d_flag = 0 and role_o_code = #{roleCode}
+    </select>
+    <update id="updateRoleRelateDataAuToRole">
+      update sys_rbac_role t set t.data_au = #{dataAu} where t.role_o_code = #{roleCode}
+    </update>
+
+
+    <!-- 根据templateId查到流程第一个环节 -->
+    <select id="listTasksByTemplateId" resultType="java.lang.String" >
+        select TASK_ID from SYS_WF_TASK_BASE where TASK_TYPE = 'first' and tmpl_id in
+        <foreach collection="templateIds" item="templateId" open="(" separator="," close=")" index="index">#{templateId}</foreach>
+    </select>
+    <!-- 去除流程第一个环节权限-->
+    <delete id="deleteRoleRelate4RoleToWfByMenu">
+        DELETE FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.ROLE_CODE = #{roleCode}
+        AND (T.r_type = #{wfRType}
+        <!-- 集合为空则不设此条件 -->
+        <if test="wfCodeList != null and wfCodeList.size > 0">
+            AND T.R_CODE1  IN
+            <foreach collection="wfCodeList" item="wfCode" index="index" close=")" open="(" separator=",">
+                #{wfCode}
+            </foreach>
+        </if>
+        )
+    </delete>
+
+    <select id="listRoleRelateByRoleCodeAndRTypeByPage" resultType="com.joyin.fyzg.wyy.vo.rbac.UserVO">
+        SELECT t.R_ID,t.ACCOUNT,t.USER_O_CODE,t.USER_O_NAME,t.JY_INSERT_TIME,t.JY_UPDATE_TIME,t.FINANCIER,F.ROLE_CODE
+        FROM SYS_RBAC_ROLE_RELATE F
+        LEFT JOIN SYS_RBAC_USER T ON T.USER_O_CODE = F.R_CODE1
+        WHERE T.ENABLED = '1'
+        AND F.ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+        ORDER BY t.JY_UPDATE_TIME DESC
+    </select>
+</mapper>

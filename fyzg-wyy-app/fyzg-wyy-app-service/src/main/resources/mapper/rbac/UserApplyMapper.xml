@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yourcompany.mapper.UserApplyMapper">
+
+    <!-- 分页查询申请单 -->
+    <select id="selectPageByCondition" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyDO">
+        SELECT
+        ID, APPLY_NO, APPLICANT, APPLY_TIME,
+        USER_O_CODE, USER_O_NAME, ACCOUNT, ORG, FINANCIER,
+        ENABLED, TEL, EMAIL, MOBILE,
+        STATUS, CURRENT_APPROVER, APPROVE_START_TIME, APPROVE_END_TIME,
+        REMARK, CREATE_TIME, UPDATE_TIME
+        FROM SYS_RBAC_USER_APPLY
+        <where>
+            <if test="applyNo != null and applyNo != ''">
+                AND APPLY_NO LIKE '%' || #{applyNo} || '%'
+            </if>
+            <if test="applicant != null and applicant != ''">
+                AND APPLICANT = #{applicant}
+            </if>
+            <if test="status != null and status != ''">
+                AND STATUS = #{status}
+            </if>
+        </where>
+        ORDER BY APPLY_TIME DESC
+    </select>
+
+    <!-- 根据申请单号查询 -->
+    <select id="selectByApplyNo" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyDO">
+        SELECT
+            ID, APPLY_NO, APPLICANT, APPLY_TIME,
+            USER_O_CODE, USER_O_NAME, ACCOUNT, ORG, FINANCIER,
+            ENABLED, TEL, EMAIL, MOBILE,
+            THEME_CFG_JSON, COLLECT_CFG_JSON,
+            STATUS, CURRENT_APPROVER, APPROVE_START_TIME, APPROVE_END_TIME,
+            REMARK, CREATE_TIME, UPDATE_TIME
+        FROM SYS_RBAC_USER_APPLY
+        WHERE APPLY_NO = #{applyNo}
+    </select>
+
+    <!-- 查询待我审批的申请单 -->
+    <select id="selectPendingApprovals" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyDO">
+        SELECT ua.*
+        FROM SYS_RBAC_USER_APPLY ua
+                 INNER JOIN SYS_RBAC_USER_APPLY_AUDIT audit
+                            ON ua.APPLY_ID = audit.APPLY_ID
+        WHERE ua.STATUS = 'PENDING'
+         -- AND audit.APPROVER = #{approver}
+          AND audit.APPROVE_RESULT IS NULL
+        ORDER BY ua.APPLY_TIME DESC
+    </select>
+
+</mapper>

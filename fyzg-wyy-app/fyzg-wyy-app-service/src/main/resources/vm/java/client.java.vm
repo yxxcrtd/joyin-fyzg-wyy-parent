@@ -1,0 +1,28 @@
+package ${packageName}.client${modulePackageName};
+
+import com.joyin.fyzg.common.FeignResponse;
+import ${packageName}.vo${modulePackageName}.${ClassName}VO;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@FeignClient(value = "FYZG-YYDD-TASK")
+public interface ${ClassName}ClientService {
+	final String ROOT_NAME="/${className}/";
+
+	@PostMapping(ROOT_NAME+"insert${ClassName}")
+	public FeignResponse insert${ClassName}(@RequestBody ${ClassName}VO ${className}VO);
+
+	@PostMapping(ROOT_NAME+"update${ClassName}ById")
+	public FeignResponse update${ClassName}ById(@RequestBody ${ClassName}VO ${className}VO);
+
+	@DeleteMapping(ROOT_NAME+"delete${ClassName}ById")
+	public FeignResponse delete${ClassName}ById(@RequestParam("${pkColumn.getJavaField()}") ${pkColumn.getJavaType()} ${pkColumn.getJavaField()});
+
+	@GetMapping(ROOT_NAME+"get${ClassName}ById")
+	public FeignResponse get${ClassName}ById(@RequestParam("${pkColumn.getJavaField()}") ${pkColumn.getJavaType()} ${pkColumn.getJavaField()});
+
+	@GetMapping(ROOT_NAME+"listAll")
+	public FeignResponse<List<${ClassName}VO>> listAll();
+}

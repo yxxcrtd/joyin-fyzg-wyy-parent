@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yourcompany.mapper.UserApplyAuditMapper">
+
+    <!-- 查询某申请单的审批记录 -->
+    <select id="selectByApplyId" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyAttachmentDO">
+        SELECT
+            *
+        FROM SYS_RBAC_USER_APPLY_AUDIT
+        WHERE APPLY_ID = #{applyId}
+        ORDER BY SEQUENCE
+    </select>
+
+    <!-- 查询待审批任务 -->
+    <select id="selectPendingAudits" resultType="com.joyin.fyzg.wyy.entity.rbac.UserApplyAttachmentDO">
+        SELECT
+            ID, APPLY_ID, NODE_NAME, APPROVER, APPROVE_TIME,
+            APPROVE_RESULT, APPROVE_COMMENT, SEQUENCE, CREATE_TIME
+        FROM SYS_RBAC_USER_APPLY_AUDIT
+        WHERE APPROVER = #{approver}
+          AND APPROVE_RESULT IS NULL
+        ORDER BY CREATE_TIME
+    </select>
+
+</mapper>

@@ -1,0 +1,104 @@
+package ${packageName}.service${modulePackageName}.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joyin.fyzg.common.MethodResponse;
+import com.joyin.fyzg.common.PageConditionRequest;
+import ${packageName}.entity${modulePackageName}.${ClassName}DO;
+import ${packageName}.mapper${modulePackageName}.${ClassName}Mapper;
+import ${packageName}.service${modulePackageName}.${ClassName}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static com.joyin.fyzg.enums.BaseExceptionEnum.*;
+
+@Service
+@Slf4j
+public class ${ClassName}ServiceImpl implements ${ClassName}Service {
+
+	@Autowired
+	${ClassName}Mapper ${className}Mapper;
+
+	@Override
+	public MethodResponse insert${ClassName}(${ClassName}DO ${className}DO) {
+		try {
+			${className}Mapper.insert(${className}DO);
+			return MethodResponse.success(${className}DO.${pkColumn.readGetAttrName()}());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			log.error(INSERT_FAIL.formatEntity(${ClassName}DO.class, e).getErrorMsg(), e);
+			return MethodResponse.transWithCodeMsgEnum(INSERT_FAIL.formatEntity(${ClassName}DO.class, e));
+		}
+	}
+
+	@Override
+	public MethodResponse update${ClassName}ById(${ClassName}DO ${className}DO) {
+		try {
+			${className}Mapper.updateById(${className}DO);
+			return MethodResponse.success();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			log.error(UPDATE_FAIL.formatEntity(${ClassName}DO.class, e).getErrorMsg(), e);
+			return MethodResponse.transWithCodeMsgEnum(UPDATE_FAIL.formatEntity(${ClassName}DO.class, e));
+		}
+	}
+
+	@Override
+	public MethodResponse delete${ClassName}ById(${pkColumn.getJavaType()} ${pkColumn.getJavaField()}) {
+		try {
+			${className}Mapper.deleteById(${pkColumn.getJavaField()});
+			return MethodResponse.success();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			log.error(DELETE_FAIL.formatEntity(${ClassName}DO.class, e).getErrorMsg(), e);
+			return MethodResponse.transWithCodeMsgEnum(DELETE_FAIL.formatEntity(${ClassName}DO.class, e));
+		}
+	}
+
+	@Override
+	public ${ClassName}DO get${ClassName}ById(${pkColumn.getJavaType()} ${pkColumn.getJavaField()}) {
+		return ${className}Mapper.selectById(${pkColumn.getJavaField()});
+	}
+
+	@Override
+	public List<${ClassName}DO> listAll() {
+		return ${className}Mapper.selectList();
+	}
+
+	@Override
+	public IPage<${ClassName}DO> list${ClassName}PageByCondition(PageConditionRequest<${ClassName}DO> pageConditionRequest) {
+		QueryWrapper<${ClassName}DO> queryWrapper = new QueryWrapper<>();
+		if (null != pageConditionRequest.getCondition()) {
+			#foreach ($column in $columns)
+				#if($column.query)
+					#if($column.javaType == "Integer" || $column.javaType == "Long")
+						if (null != pageConditionRequest.getCondition().${column.readGetAttrName()}()) {
+							queryWrapper.lambda().eq(${ClassName}DO::$column.readGetAttrName(), pageConditionRequest.getCondition().${column.readGetAttrName()}());
+						}
+					#elseif($column.javaType == "String")
+						if (StringUtils.isNotBlank(pageConditionRequest.getCondition().${column.readGetAttrName()}())) {
+							queryWrapper.lambda().like(${ClassName}DO::$column.readGetAttrName(), pageConditionRequest.getCondition().${column.readGetAttrName()}());
+						}
+					#elseif($column.javaType == "Date")
+						if (null != pageConditionRequest.getCondition().${column.readGetAttrName()}()) {
+							LocalDateTime localDateTime = LocalDateTime.ofInstant(pageConditionRequest.getCondition().${column.readGetAttrName()}().toInstant(), ZoneId.systemDefault());
+							queryWrapper.lambda().eq(${ClassName}DO::$column.readGetAttrName(), localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+						}
+					#end
+				#end
+			#end
+		}
+		return ${className}Mapper.selectPage(new Page<>(pageConditionRequest.getPage(), pageConditionRequest.getPageSize()), queryWrapper);
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.financier.FinancierDfMapper">
+    <select id="listFinancierByCustOCode" resultType="com.joyin.fyzg.wyy.entity.financier.FinancierDO">
+     select distinct CUST_O_CODE, CUST_O_NAME
+      from (select T2.*
+              from DW_CUST_FINANCIER_MP T1
+             INNER JOIN DW_CUST_FINANCIER T2
+                ON T1.RELATE_CODE = T2.CUST_O_CODE
+             WHERE T1.CUST_O_CODE = #{custOCode}
+            union all
+            select T2.*
+              from DW_CUST_FINANCIER T2
+             WHERE T2.CUST_O_CODE = #{custOCode})
+    </select>
+    <select id="listFinancierMpBOByCustOCode" resultType="com.joyin.fyzg.wyy.entity.financier.FinancierMpBO">
+        select T1.*,T2.CUST_O_NAME as RELATE_NAME
+        from DW_CUST_FINANCIER_MP T1
+            INNER JOIN DW_CUST_FINANCIER T2
+                ON T1.RELATE_CODE = T2.CUST_O_CODE
+        WHERE T1.CUST_O_CODE = #{custOCode}
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.roleRelevanceUser.RoleRelevanceUserMapper">
+    <select id="listUserByRoleCodeAndUserName" resultType="com.joyin.fyzg.wyy.entity.rbac.UserDO">
+        select T2.*
+        from SYS_RBAC_ROLE_RELATE T1
+            INNER JOIN SYS_RBAC_USER T2
+        ON T1.R_TYPE = #{rType}
+        AND T1.R_CODE1 = T2.USER_O_CODE
+        WHERE T1.ROLE_CODE = #{roleCode}
+        <if test=' userName !=null and userName != "" '>
+            AND T2.USER_O_NAME  like CONCAT(CONCAT('%', #{userName}), '%')
+        </if>
+    </select>
+</mapper>

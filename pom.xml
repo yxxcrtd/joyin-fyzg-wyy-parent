@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.joyin.fyzg</groupId>
+    <artifactId>joyin-fyzg-wyy-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+		<!--项目版本、jdk、编码等常量配置 begin-->
+		<fyzg.version>0.0.1-SNAPSHOT</fyzg.version>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!--项目版本、jdk、编码等常量配置 end-->
+
+		<!--dependency常量配置 begin-->
+		<druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
+		<ojdbc8.version>19.13.0.0.0</ojdbc8.version>
+		<orai18n.version>19.13.0.0</orai18n.version>
+		<lombok.version>1.16.18</lombok.version>
+		<swagger.version>2.6.1</swagger.version>
+		<mybatis-plus-boot-starter.version>3.2.0</mybatis-plus-boot-starter.version>
+		<!--dependency常量配置 end-->
+
+		<!--build常量配置 begin-->
+		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
+		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
+		<maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
+		<spring-boot-maven-plugin.version>1.5.9.RELEASE</spring-boot-maven-plugin.version>
+		<!--build常量配置 end-->
+
+    </properties>
+
+	<dependencies>
+		<!-- lombok begin -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- lombok end -->
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.9.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Dalston.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus-boot-starter.version}</version>
+			</dependency>
+			<!-- lombok begin -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<!-- lombok end -->
+			<!-- swagger2 begin -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<!-- swagger2 end -->
+			<!-- oracle数据库连接驱动 begin -->
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>${ojdbc8.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle.database.nls</groupId>
+				<artifactId>orai18n</artifactId>
+				<version>${orai18n.version}</version>
+			</dependency>
+			<!-- oracle数据库连接驱动 end -->
+			<!--自启动Druid管理后台 begin-->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid-spring-boot-starter.version}</version>
+			</dependency>
+			<!--自启动Druid管理后台 end-->
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<finalName>joyin-fyzg-wyy-parent</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<configuration>
+					<delimiters>
+						<delimit>$</delimit>
+					</delimiters>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot-maven-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<!-- 两个ID必须与 setting.xml中的<server><id>nexus-releases</id></server>保持一致-->
+		<repository>
+			<id>nexus-releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://192.168.3.23:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://192.168.3.23:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+    <modules>
+        <module>fyzg-wyy-common</module>
+        <module>fyzg-wyy-app</module>
+    </modules>
+
+	<repositories>
+		<repository>
+			<id>local_repo</id>
+			<url>file://D:/repository</url>
+		</repository>
+	</repositories>
+
+    
+</project>

@@ -1,0 +1,38 @@
+import http from 'utils/httpConfig/http'
+
+const baseUrl = '/${className}/'
+
+// 查询所有数据
+export function listAll() {
+  return http.get(baseUrl + '/listAll')
+}
+
+// 根据id查询
+export function get${ClassName}ById(data) {
+  return http.get(baseUrl + 'get${ClassName}ById', data)
+}
+
+// 添加
+export function insert${ClassName}(data) {
+  return http.post(baseUrl + 'insert${ClassName}', data)
+}
+
+// 更新
+export function update${ClassName}ById(data) {
+  return http.post(baseUrl + 'update${ClassName}ById', data)
+}
+
+// 删除
+export function delete${ClassName}ById(data) {
+  return http.delete(baseUrl + 'delete${ClassName}ById', data)
+}
+
+// 根据查询条件分页查询
+export function list${ClassName}PageByCondition(data) {
+  return http.post(baseUrl + 'list${ClassName}PageByCondition', data)
+}
+
+// 删除${functionName}
+export function exportList(data) {
+  return http.postDownload(baseUrl+'export${ClassName}List',data)
+}

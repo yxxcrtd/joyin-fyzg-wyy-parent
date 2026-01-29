@@ -1,0 +1,28 @@
+package ${packageName}.vo${modulePackageName};
+
+import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
+/**
+ * 表${tableName.toUpperCase()}的VO类
+ * @author 工具生成
+ * @version 1.0
+ * @since
+ */
+@Data
+public class ${ClassName}VO {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnName.toUpperCase() : $column.columnComment */
+    #if($column.javaType == "Date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    #end
+    private $column.javaType $column.javaField;
+
+#end
+#end
+
+}

@@ -1,0 +1,221 @@
+<template>
+  <div class="form_container" v-loading="dataLoading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading">
+    <el-collapse v-model="activeNames" class="custom_collapse_style">
+      <el-form ref="form" :model="formData" :rules="rules" label-position="right" label-width="200px" size="small">
+        <el-collapse-item title="基本信息" name="1">
+          <div class="form_collapse">
+          #foreach($column in $columns)
+#set($field=$column.javaField)
+#if($column.insert && !$column.pk)
+#if(($column.usableColumn) || (!$column.superColumn))
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#set($dictType=$column.dictType)
+#if($column.htmlType == "input")
+        <el-form-item label="${comment}" prop="${field}">
+          <el-input v-model="formData.${field}" placeholder="请输入${comment}" />
+        </el-form-item>
+#elseif($column.htmlType == "imageUpload")
+        <el-form-item label="${comment}" prop="${field}">
+          <image-upload v-model="formData.${field}"/>
+        </el-form-item>
+#elseif($column.htmlType == "fileUpload")
+        <el-form-item label="${comment}" prop="${field}">
+          <file-upload v-model="formData.${field}"/>
+        </el-form-item>
+#elseif($column.htmlType == "editor")
+        <el-form-item label="${comment}">
+          <editor v-model="formData.${field}" :min-height="192"/>
+        </el-form-item>
+#elseif($column.htmlType == "select" && "" != $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-select v-model="formData.${field}" placeholder="请选择${comment}">
+            <el-option
+              v-for="dict in #[[$]]#dict.getDictData('${dictType}')"
+              :key="dict.value"
+              :label="dict.label"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+              :value="parseInt(dict.value)"
+#else
+              :value="dict.value"
+#end
+            ></el-option>
+          </el-select>
+        </el-form-item>
+#elseif($column.htmlType == "select" && $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-select v-model="formData.${field}" placeholder="请选择${comment}">
+            <el-option label="请选择字典生成" value="" />
+          </el-select>
+        </el-form-item>
+#elseif($column.htmlType == "checkbox" && "" != $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-checkbox-group v-model="formData.${field}">
+            <el-checkbox
+              v-for="dict in #[[$]]#dict.getDictData('${dictType}')"
+              :key="dict.value"
+              :label="dict.value">
+              {{dict.label}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+#elseif($column.htmlType == "checkbox" && $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-checkbox-group v-model="formData.${field}">
+            <el-checkbox>请选择字典生成</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+#elseif($column.htmlType == "radio" && "" != $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-radio-group v-model="formData.${field}">
+            <el-radio
+              v-for="dict in #[[$]]#dict.getDictData('${dictType}')"
+              :key="dict.value"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+              :label="parseInt(dict.value)"
+#else
+              :label="dict.value"
+#end
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+#elseif($column.htmlType == "radio" && $dictType)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-radio-group v-model="formData.${field}">
+            <el-radio label="1">请选择字典生成</el-radio>
+          </el-radio-group>
+        </el-form-item>
+#elseif($column.htmlType == "datetime")
+        <el-form-item label="${comment}" prop="${field}">
+          <el-date-picker clearable
+            v-model="formData.${field}"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="请选择${comment}">
+          </el-date-picker>
+        </el-form-item>
+#elseif($column.htmlType == "textarea")
+        <el-form-item label="${comment}" prop="${field}">
+          <el-input v-model="formData.${field}" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+#end
+#end
+#end
+#end
+          </div>
+        </el-collapse-item>
+      </el-form>
+    </el-collapse>
+    <el-button v-if="isAdd || isEdit" type="primary" :loading="saveLoading" class="fixed_btn" size="small" style="margin-top: 10px" @click="saveData()">
+      <i class="el-icon-save"></i>
+      保存信息
+    </el-button>
+  </div>
+</template>
+
+<script>
+import {get${ClassName}ById, insert${ClassName}, update${ClassName}ById} from './api'
+export default {
+  name: '${ClassName}Form',
+  data() {
+    return {
+      activeNames: ['1'],
+      formData: {},
+      rules: {
+#foreach ($column in $columns)
+#if($column.required)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+        $column.javaField: [
+          { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }
+        ]#if($foreach.count != $columns.size()),#end
+#end
+#end
+      },
+      saveLoading: false,
+      dataLoading: false,
+    }
+  },
+  created() {
+    this.initData()
+  },
+  computed: {
+    isAdd(){
+      return this.#[[$]]#route.path.indexOf('/Add')>-1
+    },
+    isEdit(){
+      return this.#[[$]]#route.path.indexOf('/Edit')>-1
+    },
+    isView(){
+      return this.#[[$]]#route.path.indexOf('/View')>-1
+    }
+  },
+  methods: {
+    /**
+     * 初始化数据
+     */
+    initData() {
+      let rId = this.#[[$]]#route.params.id
+      if (rId) {
+        get${ClassName}ById({id:rId}).then(res=>{
+          this.formData=res.result
+        })
+      }
+    },
+    /**
+     * 提交保存
+     */
+    saveData() {
+      this.#[[$]]#refs.form.validate(async valid => {
+        if (valid) {
+          let res =this.isAdd ? await insert${ClassName}(this.formData) : await update${ClassName}ById(this.formData)
+          this.#[[$]]#notify({
+            title: '成功',
+            message: '保存成功',
+            type: 'success',
+            duration: 2000,
+            position: 'bottom-right'
+          })
+          this.saveLoading = false
+          this.functions.closeCurrentPage(this.#[[$]]#route)
+        }
+      })
+    },
+  }
+}
+</script>
+
+<style lang="scss">
+.form_container {
+  .form_collapse {
+    display: flex;
+    flex-flow: wrap;
+  }
+  .el-form .el-form-item {
+    width: 50%;
+  }
+  .el-form .el-form-item__content {
+    width: 60%;
+  }
+  .el-select {
+    width: 100%;
+  }
+  .el-form-item__error {
+    z-index: 1;
+  }
+  .el-form .form_collapse .item_block {
+    width: 100%;
+    .el-form-item__content {
+      width: 80%;
+    }
+  }
+}
+</style>

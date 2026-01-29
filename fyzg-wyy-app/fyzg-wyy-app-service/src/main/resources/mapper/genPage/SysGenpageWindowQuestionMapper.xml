@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.genPage.SysGenpageWindowQuestionMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowQuestion">
+            <id property="id" column="ID" jdbcType="DECIMAL"/>
+            <result property="windowId" column="WINDOW_ID" jdbcType="DECIMAL"/>
+            <result property="questionSeq" column="QUESTION_SEQ" jdbcType="DECIMAL"/>
+            <result property="questionType" column="QUESTION_TYPE" jdbcType="VARCHAR"/>
+            <result property="question" column="QUESTION" jdbcType="VARCHAR"/>
+            <result property="answerSeq" column="ANSWER_SEQ" jdbcType="DECIMAL"/>
+            <result property="answer" column="ANSWER" jdbcType="VARCHAR"/>
+            <result property="answerResult" column="ANSWER_RESULT" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,WINDOW_ID,QUESTION_SEQ,
+        QUESTION_TYPE,QUESTION,ANSWER_SEQ,
+        ANSWER,ANSWER_RESULT,CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_WINDOW_QUESTION
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_GENPAGE_WINDOW_QUESTION
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowQuestion" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_WINDOW_QUESTION
+        ( WINDOW_ID,QUESTION_SEQ
+        ,QUESTION_TYPE,QUESTION,ANSWER_SEQ
+        ,ANSWER,ANSWER_RESULT,CREATE_TIME
+        ,UPDATE_TIME)
+        values (#{windowId,jdbcType=DECIMAL},#{questionSeq,jdbcType=DECIMAL}
+        ,#{questionType,jdbcType=VARCHAR},#{question,jdbcType=VARCHAR},#{answerSeq,jdbcType=DECIMAL}
+        ,#{answer,jdbcType=VARCHAR},#{answerResult,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowQuestion" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_WINDOW_QUESTION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID,</if>
+                <if test="windowId != null">WINDOW_ID,</if>
+                <if test="questionSeq != null">QUESTION_SEQ,</if>
+                <if test="questionType != null">QUESTION_TYPE,</if>
+                <if test="question != null">QUESTION,</if>
+                <if test="answerSeq != null">ANSWER_SEQ,</if>
+                <if test="answer != null">ANSWER,</if>
+                <if test="answerResult != null">ANSWER_RESULT,</if>
+                <if test="createTime != null">CREATE_TIME,</if>
+                <if test="updateTime != null">UPDATE_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=DECIMAL},</if>
+                <if test="windowId != null">#{windowId,jdbcType=DECIMAL},</if>
+                <if test="questionSeq != null">#{questionSeq,jdbcType=DECIMAL},</if>
+                <if test="questionType != null">#{questionType,jdbcType=VARCHAR},</if>
+                <if test="question != null">#{question,jdbcType=VARCHAR},</if>
+                <if test="answerSeq != null">#{answerSeq,jdbcType=DECIMAL},</if>
+                <if test="answer != null">#{answer,jdbcType=VARCHAR},</if>
+                <if test="answerResult != null">#{answerResult,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowQuestion">
+        update SYS_GENPAGE_WINDOW_QUESTION
+        <set>
+                <if test="windowId != null">
+                    WINDOW_ID = #{windowId,jdbcType=DECIMAL},
+                </if>
+                <if test="questionSeq != null">
+                    QUESTION_SEQ = #{questionSeq,jdbcType=DECIMAL},
+                </if>
+                <if test="questionType != null">
+                    QUESTION_TYPE = #{questionType,jdbcType=VARCHAR},
+                </if>
+                <if test="question != null">
+                    QUESTION = #{question,jdbcType=VARCHAR},
+                </if>
+                <if test="answerSeq != null">
+                    ANSWER_SEQ = #{answerSeq,jdbcType=DECIMAL},
+                </if>
+                <if test="answer != null">
+                    ANSWER = #{answer,jdbcType=VARCHAR},
+                </if>
+                <if test="answerResult != null">
+                    ANSWER_RESULT = #{answerResult,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updateTime != null">
+                    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowQuestion">
+        update SYS_GENPAGE_WINDOW_QUESTION
+        set 
+            WINDOW_ID =  #{windowId,jdbcType=DECIMAL},
+            QUESTION_SEQ =  #{questionSeq,jdbcType=DECIMAL},
+            QUESTION_TYPE =  #{questionType,jdbcType=VARCHAR},
+            QUESTION =  #{question,jdbcType=VARCHAR},
+            ANSWER_SEQ =  #{answerSeq,jdbcType=DECIMAL},
+            ANSWER =  #{answer,jdbcType=VARCHAR},
+            ANSWER_RESULT =  #{answerResult,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME =  #{updateTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+
+    <select id="selectByWindowId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_WINDOW_QUESTION
+        where  WINDOW_ID = #{windowId,jdbcType=DECIMAL}
+        order by QUESTION_SEQ,ANSWER_SEQ
+    </select>
+
+    <select id="deleteByWindowId" parameterType="java.lang.Long">
+        delete
+        from SYS_GENPAGE_WINDOW_QUESTION
+        where  WINDOW_ID = #{windowId,jdbcType=DECIMAL}
+    </select>
+</mapper>

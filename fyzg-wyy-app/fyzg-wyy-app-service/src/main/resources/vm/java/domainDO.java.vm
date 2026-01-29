@@ -1,0 +1,37 @@
+package ${packageName}.entity${modulePackageName};
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import java.util.Date;
+
+/**
+ * 表${tableName.toUpperCase()}的DO类
+ * @author 工具生成
+ * @version 1.0
+ * @since
+ */
+@Data
+@KeySequence(value = "S_${tableName.toUpperCase()}",clazz = ${pkColumn.getJavaType()}.class)
+@TableName("${tableName.toUpperCase()}")
+public class ${ClassName}DO {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnName.toUpperCase() : $column.columnComment */
+    #if($column.isPk == '1')
+	@TableId(value = "$column.columnName.toUpperCase()", type = IdType.AUTO)
+    #end
+    #if($column.javaType == "Date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    #end
+    private $column.javaType $column.javaField;
+
+#end
+#end
+
+}

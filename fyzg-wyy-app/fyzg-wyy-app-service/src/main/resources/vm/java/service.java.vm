@@ -1,0 +1,23 @@
+package ${packageName}.service${modulePackageName};
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.joyin.fyzg.common.PageConditionRequest;
+import com.joyin.fyzg.common.MethodResponse;
+import ${packageName}.entity${modulePackageName}.${ClassName}DO;
+
+import java.util.List;
+
+public interface ${ClassName}Service {
+
+	MethodResponse insert${ClassName}(${ClassName}DO ${className}DO);
+
+	MethodResponse update${ClassName}ById(${ClassName}DO ${className}DO);
+
+	MethodResponse delete${ClassName}ById(${pkColumn.getJavaType()} ${pkColumn.getJavaField()});
+
+	${ClassName}DO get${ClassName}ById(${pkColumn.getJavaType()} ${pkColumn.getJavaField()});
+
+	List<${ClassName}DO> listAll();
+
+	IPage<${ClassName}DO> list${ClassName}PageByCondition(PageConditionRequest<${ClassName}DO> pageConditionRequest);
+}

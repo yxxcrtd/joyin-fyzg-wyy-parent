@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.genPage.SysGenpageSatisficationEvalMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEval">
+            <id property="id" column="ID" jdbcType="DECIMAL"/>
+            <result property="pageId" column="PAGE_ID" jdbcType="VARCHAR"/>
+            <result property="pageName" column="PAGE_NAME" jdbcType="VARCHAR"/>
+            <result property="pageFunction" column="PAGE_FUNCTION" jdbcType="VARCHAR"/>
+            <result property="userId" column="USER_ID" jdbcType="VARCHAR"/>
+            <result property="score" column="SCORE" jdbcType="DECIMAL"/>
+            <result property="suggest" column="SUGGEST" jdbcType="VARCHAR"/>
+            <result property="attaId" column="ATTA_ID" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,PAGE_ID,PAGE_NAME,
+        PAGE_FUNCTION,USER_ID,SCORE,
+        SUGGEST,ATTA_ID,CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_SATISFICATION_EVAL
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_GENPAGE_SATISFICATION_EVAL
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEval" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_SATISFICATION_EVAL
+        ( PAGE_ID,PAGE_NAME
+        ,PAGE_FUNCTION,USER_ID,SCORE
+        ,SUGGEST,ATTA_ID,CREATE_TIME
+        ,UPDATE_TIME)
+        values (#{pageId,jdbcType=VARCHAR},#{pageName,jdbcType=VARCHAR}
+        ,#{pageFunction,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{score,jdbcType=DECIMAL}
+        ,#{suggest,jdbcType=VARCHAR},#{attaId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEval" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_SATISFICATION_EVAL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID,</if>
+                <if test="pageId != null">PAGE_ID,</if>
+                <if test="pageName != null">PAGE_NAME,</if>
+                <if test="pageFunction != null">PAGE_FUNCTION,</if>
+                <if test="userId != null">USER_ID,</if>
+                <if test="score != null">SCORE,</if>
+                <if test="suggest != null">SUGGEST,</if>
+                <if test="attaId != null">ATTA_ID,</if>
+                <if test="createTime != null">CREATE_TIME,</if>
+                <if test="updateTime != null">UPDATE_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=DECIMAL},</if>
+                <if test="pageId != null">#{pageId,jdbcType=VARCHAR},</if>
+                <if test="pageName != null">#{pageName,jdbcType=VARCHAR},</if>
+                <if test="pageFunction != null">#{pageFunction,jdbcType=VARCHAR},</if>
+                <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+                <if test="score != null">#{score,jdbcType=DECIMAL},</if>
+                <if test="suggest != null">#{suggest,jdbcType=VARCHAR},</if>
+                <if test="attaId != null">#{attaId,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEval">
+        update SYS_GENPAGE_SATISFICATION_EVAL
+        <set>
+                <if test="pageId != null">
+                    PAGE_ID = #{pageId,jdbcType=VARCHAR},
+                </if>
+                <if test="pageName != null">
+                    PAGE_NAME = #{pageName,jdbcType=VARCHAR},
+                </if>
+                <if test="pageFunction != null">
+                    PAGE_FUNCTION = #{pageFunction,jdbcType=VARCHAR},
+                </if>
+                <if test="userId != null">
+                    USER_ID = #{userId,jdbcType=VARCHAR},
+                </if>
+                <if test="score != null">
+                    SCORE = #{score,jdbcType=DECIMAL},
+                </if>
+                <if test="suggest != null">
+                    SUGGEST = #{suggest,jdbcType=VARCHAR},
+                </if>
+                <if test="attaId != null">
+                    ATTA_ID = #{attaId,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updateTime != null">
+                    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageSatisficationEval">
+        update SYS_GENPAGE_SATISFICATION_EVAL
+        set 
+            PAGE_ID =  #{pageId,jdbcType=VARCHAR},
+            PAGE_NAME =  #{pageName,jdbcType=VARCHAR},
+            PAGE_FUNCTION =  #{pageFunction,jdbcType=VARCHAR},
+            USER_ID =  #{userId,jdbcType=VARCHAR},
+            SCORE =  #{score,jdbcType=DECIMAL},
+            SUGGEST =  #{suggest,jdbcType=VARCHAR},
+            ATTA_ID =  #{attaId,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME =  #{updateTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+</mapper>

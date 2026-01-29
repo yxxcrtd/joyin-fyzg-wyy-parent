@@ -1,0 +1,258 @@
+server:
+  port: 9999
+  context-path: /wyy
+spring:
+  application:
+    name: fyzg-wyy-app-service
+  datasource:
+    username: dfzqwyykf
+    password: joyin123
+#    password: joyin$123
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//192.168.88.129:1521/wfw
+#    url: jdbc:oracle:thin:@//10.46.41.178:1521/oratest
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialize: false
+    druid:
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        enabled: true
+        url-pattern: "/druid/*"
+        reset-enable: false
+        login-username: admin@123456 # 登录名
+        login-password: admin@123456 # 登录密码
+        allow: 127.0.0.1 # 允许访问的IP白名单
+        deny: ""
+  druid:
+    # 连接池的配置信息
+    # 初始化大小，最小，最大
+    initial-size: 5
+    min-idle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+  session:
+    jdbc:
+      table-name:
+        nameList:
+            - {enName: "SYS_RBAC_DEPART", fullName: "部门(SYS_RBAC_DEPART)", cnName: "部门"}
+            - {enName: "SYS_RBAC_MENU_MODULE", fullName: "菜单模块表(SYS_RBAC_MENU_MODULE)", cnName: "菜单模块表"}
+            - {enName: "SYS_RBAC_MENU_PAGE", fullName: "菜单页面表(SYS_RBAC_MENU_PAGE)", cnName: "菜单页面表"}
+            - {enName: "SYS_RBAC_MENU_PAGE_ACTION", fullName: "菜单页面操作表(SYS_RBAC_MENU_PAGE_ACTION)", cnName: "菜单页面操作表"}
+            - {enName: "SYS_RBAC_MENU_PAGE_COMPONENT", fullName: "菜单页面组件表(SYS_RBAC_MENU_PAGE_COMPONENT)", cnName: "菜单页面组件表"}
+            - {enName: "SYS_RBAC_MENU_PAGE_PARAMETER", fullName: "菜单页面请求表(SYS_RBAC_MENU_PAGE_PARAMETER)", cnName: "菜单页面请求表"}
+            - {enName: "SYS_RBAC_MENU_PAGE_REQUEST", fullName: "菜单页面请求表(SYS_RBAC_MENU_PAGE_REQUEST)", cnName: "菜单页面请求表"}
+            - {enName: "SYS_RBAC_ROLE", fullName: "角色信息表(SYS_RBAC_ROLE)", cnName: "角色信息表"}
+            - {enName: "SYS_RBAC_ROLE_RELATE", fullName: "角色关联对象表(SYS_RBAC_ROLE_RELATE)", cnName: "角色关联对象表"}
+            - {enName: "SYS_RBAC_USER", fullName: "用户信息表(SYS_RBAC_USER)", cnName: "用户信息表"}
+            - {enName: "SYS_RBAC_USER_ADDRESSLIST", fullName: "通讯录(SYS_RBAC_USER_ADDRESSLIST)", cnName: "通讯录"}
+            - {enName: "SYS_RBAC_USER_EXT", fullName: "用户拓展配置表(SYS_RBAC_USER_EXT)", cnName: "用户拓展配置表"}
+            - {enName: "SYS_RBAC_USER_PLAN", fullName: "日程表(SYS_RBAC_USER_PLAN)", cnName: "日程表"}
+mybatis:
+  mapper-locations: classpath:mapper/*/*.xml
+  type-aliases-package: com.joyin.fyzg.wyy.entity
+
+info:
+  app.name: fyzg-wyy-app-service
+  company.name: joyintech
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+
+#mybatis
+mybatis-plus:
+  #实体扫描，多个package用逗号或者分号分隔
+  #typeAliasesPackage: com.joyin.fyzg.microservicemoduledata.vo
+  #typeEnumsPackage: com.joyin.fyzg.microservicemoduledata.vo.enums
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: id_worker
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    #打印执行的SQL，生成环境下请注释该配置，生产环境数据库访问会剧增，会打印很多sql，容易撑爆日志系统
+    #log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    return-instance-for-empty-row: true
+    #清楚一级缓存。
+    localCacheScope: STATEMENT
+  type-handlers-package: com.joyin.fyzg.typehandle
+
+logging:
+  level:
+    com.joyin.fyzg.**.mapper: debug
+
+# 是否显示异常errorMsg信息
+exception:
+  showErrorMsg: true
+
+#  系统数据建模菜单->参数管理->系统对象类型代码的id
+#  用于新增对象类型时修改其参数值
+parameterId:
+  bizModel: 51c24b95e813437b86a8a060384d6371
+  sysModel: 733108416ae341048be2490de6b17667
+
+
+session-user:
+  sqlList:
+    - {sql: " select * from SYS_RBAC_USER where USER_O_CODE = #{userCode} " ,key: 'USER_INFO'}
+    - {sql: " SELECT TO_CHAR(CFG_CONTENT) AS CFG_CONTENT from SYS_RBAC_USER_EXT where USER_O_CODE = #{userCode} and CFG_CODE = 'LAST_FINANCIER' ", key: 'CUST_FINANCIER'}
+  keyList:
+    - {name: "用户名" ,key: 'USER_INFO:USER_O_NAME'}
+    - {name: "用户代码" ,key: 'USER_INFO:USER_O_CODE'}
+    - {name: "用户管理人" ,key: 'USER_INFO:USER_MANAGER'}
+    - {name: "主题配置" ,key: 'USER_INFO:THEME_CFG_JSON'}
+    - {name: "账号" ,key: 'USER_INFO:ACCOUNT'}
+    - {name: "应用授权形式" ,key: 'APP:AUTHORIZED_GRANT_TYPES'}
+    - {name: "应用系统" ,key: 'APP:CLIENT_ID'}
+    - {name: "系统时间" ,key: 'SYS_DATE:CURRENT_DATE'}
+    - {name: "用户部门" ,key: 'USER_INFO:ORG'}
+    - {name: "产品线代码" ,key: 'APP:CLIENT_TYPE'}
+    - {name: "用户管理人" ,key: 'USER_INFO:FINANCIER'}
+    - {name: "关联机构" ,key: 'CUST_FINANCIER:CFG_CONTENT'}
+
+user:
+  password: $2a$10$R40jIjbS7w3/Qw4zn7rsnuPzF0yVCBTGiwHIBmi5er8wPgf0u4GDW
+  pwdDefault: 111111
+  pwdField: PASSWORD
+  adminAccount: admin
+  # 密码有效月份。从重置密码那天算起
+  expirationMonth: 3
+    # 到期提前天数
+  expirationRemindDays: 3
+    # 是否强制修改密码
+  forcedModify: false
+    # 锁定时间 , 单位分钟
+  lockMinute: 2
+    # 密码错误次数
+  passErrorNum: 7
+    # 存在登录用户是否踢出其他用户
+  singleSignOn: false
+
+redis:
+  redisType: alone #单机模式
+  aloneIp: 192.168.60.82
+  alonePort: 6379
+  passWord: ''
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  #有效期，给60分钟：60*60=3600，便于测试暴露问题
+  #expiration: 3600
+  #有效期，之前的给7天：60*60*24*7=604800
+  expiration: 604800
+  #有效期剩余的n分之一启动续约
+  paragraph: 10
+  requireAuthorization: true
+  authz:
+    backend:
+      enabled: true
+      protectPatterns: /wyy/sys/**,/wyy/rbac/**
+  #jwt过滤器的白名单
+  uriIgnoreList:
+  #登录页面的白名单
+  - /login4JoyinCas.act
+  - /wyy/login4JoyinCas.act
+  - /menu/getTypeList
+  - /auth/getImgCode
+  - /auth/getEncryptParams
+  - /auth/login
+  - /auth/
+  - /druid/**
+  - /wyy/auth/**
+  - /wyy/menu/getTypeList
+  - /wyy/login4JoyinCas.act
+
+#  - /api/auth/loginPC
+#  - /api/auth/
+cas:
+  enabled: false
+  server-url-prefix: http://10.45.10.50/cas-server-webapp-4.0.0
+  server-login-url: ${cas.server-url-prefix}/login
+  client-host-url: http://10.45.10.50/wyy
+#  server-url-prefix: http://192.168.90.203:8083/cas
+#  server-login-url: ${cas.server-url-prefix}/login
+#  client-host-url: http://192.168.90.203:9999
+  validation-type: CAS
+  #需要过滤的菜单
+  pattern301: /wyy/login4JoyinCas.act
+#  pattern301: ${zuul.servlet-path}/login4JoyinCas.act
+  route: /loginCAS
+
+
+eureka:
+  instance:
+    instance-id: fyzg-wyy-app-service
+    prefer-ip-address: true     #访问路径可以显示IP地址
+
+  client: #客户端注册进eureka服务列表内
+    service-url:
+      defaultZone: http://eureka1.host:7011/eureka,http://eureka2.host:7011/eureka
+
+swagger:
+  groupName: fyzg-wyy-app-service
+  basePackage: com.joyin.fyzg.wyy.controller
+
+#请求服务名
+fyzg:
+  modules:
+    dfcomposeapi:
+      applicationName: fyzg-df-compose-api # fyzg-df-compose-api
+      contextPath: /
+    rbac:
+      applicationName: fyzg-core # fyzg-rabc
+      contextPath: /
+
+
+    mldf:
+      applicationName: fyzg-core # fyzg-mldf
+      contextPath: /
+      controller-package: com.joyin.fyzg.mldf.controller.**
+    wfdf:
+      applicationName: fyzg-core # fyzg-wfdf
+      contextPath: /
+      controller-package: com.joyin.fyzg.wfdf.controller.**
+    risk:
+      applicationName: fyzg-core # fyzg-risk
+      contextPath: /
+      controller-package: com.joyin.fyzg.risk.controller.**
+
+file:
+  upload:
+    # 上传根路径（请确保目录存在且有写权限）
+    base-path: D:\test
+    # 访问前缀（用于返回可访问的 URL）
+    access-uri: /api/file/view/

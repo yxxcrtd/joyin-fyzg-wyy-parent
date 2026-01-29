@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.common.CommonMapper">
+    <select id="getOCodeNextVal" resultType="java.lang.String">
+        SELECT S_TNEW_OBJ_CODE.NEXTVAL
+        FROM dual
+    </select>
+
+    <!--模糊匹配框查询用户-->
+    <select id="listAutocompleteUserData" resultType="com.joyin.fyzg.common.QueryResultMap">
+        select *
+          from (select t.USER_O_CODE as O_CODE,
+                       t.USER_O_NAME as SHOW_NAME,
+                       t.ACCOUNT     as ACCOUNT
+                  from SYS_RBAC_USER t
+                 where 1 = 1
+            <if test='queryString != "" and queryString != null'>
+                and  t.USER_O_NAME like CONCAT(CONCAT('%', #{queryString}), '%')
+            </if>
+          )
+         where rownum &lt; = 30
+    </select>
+
+</mapper>

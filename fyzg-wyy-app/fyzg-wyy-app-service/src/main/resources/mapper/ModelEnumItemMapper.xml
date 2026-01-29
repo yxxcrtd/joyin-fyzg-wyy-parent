@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.common.ModelEnumItemMapper">
+
+    <select id="listAllEnumItem"  resultType="com.joyin.fyzg.wyy.entity.common.ModelEnumItemBO">
+        SELECT
+            t1.ENUM_CODE ,
+            t2.ENUM_NAME ,
+            t1.ENUM_LABEL,
+            t1.ENUM_VALUE,
+            t1.ENUM_SORT ,
+            t1.PARAM1    ,
+            t1.PARAM2    ,
+            t1.PARAM3
+        from
+            SYS_ML_MODEL_ENUM_ITEM t1
+            inner join SYS_ML_MODEL_ENUM t2
+                on
+                    t1.ENUM_CODE = t2.ENUM_CODE
+            where t2.ENUM_VISIBLE = '1'
+            AND
+                  t1.ENUM_CODE not in
+                  ('C0104','RX30011','RX30033','RX30034','908236ae299ab613d9d4aaee3b04d8ac','93dd2a06dc6dfc58077649e4ef64f8b0','543bed74050d47031a758ca3cc870213','RX16352','RX16467','RX98','RX16389','RX16351','C0108')
+                  and t1.ENUM_CODE not like '%RX%'
+        order by t1.ENUM_SORT
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.rbac.AppMapper">
+
+
+    <select id="selectMenu4Module" resultType="com.joyin.fyzg.wyy.entity.rbac.MenuModuleDO">
+        SELECT T.*
+        FROM SYS_RBAC_MENU_MODULE T
+        WHERE T.BUS_TYPE = #{busType} AND T.ENABLED= #{enabled} AND T.R_ID IN
+                                          (SELECT R_CODE1
+                                           FROM (SELECT DISTINCT T1.R_CODE1
+                                                 FROM SYS_RBAC_ROLE_RELATE T1
+                                                 WHERE T1.R_TYPE = #{moduleRType}
+                                                       AND T1.ROLE_CODE IN (SELECT ROLE_CODE
+                                                                           FROM (SELECT T2.ROLE_CODE
+                                                                                 FROM SYS_RBAC_ROLE_RELATE T2
+                                                                                 WHERE T2.R_TYPE = #{userRType}
+                                                                                       AND T2.R_CODE1 = #{userCode}) tab1)) tab2)
+    </select>
+
+    <select id="selectMenu4Page" resultType="com.joyin.fyzg.wyy.entity.rbac.MenuPageDO">
+        SELECT T.*
+        FROM SYS_RBAC_MENU_PAGE T
+        WHERE T.BUS_TYPE = #{busType} AND T.ENABLED= #{enabled} AND T.R_ID IN
+                                          (SELECT R_CODE1
+                                           FROM (SELECT DISTINCT T1.R_CODE1
+                                                 FROM SYS_RBAC_ROLE_RELATE T1
+                                                 WHERE T1.R_TYPE = #{pageRType}
+                                                       AND T1.ROLE_CODE IN (SELECT ROLE_CODE
+                                                                           FROM (SELECT T2.ROLE_CODE
+                                                                                 FROM SYS_RBAC_ROLE_RELATE T2
+                                                                                 WHERE T2.R_TYPE = #{userRType}
+                                                                                       AND T2.R_CODE1 = #{userCode}) tab1)) tab2)
+    </select>
+
+    <select id="selectPage4Component" resultType="com.joyin.fyzg.wyy.entity.rbac.MenuPageComponentDO">
+        SELECT T.*
+        FROM SYS_RBAC_MENU_PAGE_COMPONENT T
+        WHERE T.R_ID IN (SELECT R_ID
+                         FROM (SELECT DISTINCT T1.R_CODE1
+                               FROM SYS_RBAC_ROLE_RELATE T1
+                               WHERE T1.R_TYPE = #{pageRType}
+                                     AND T1.ROLE_CODE IN (SELECT ROLE_CODE
+                                                         FROM (SELECT T2.ROLE_CODE
+                                                               FROM SYS_RBAC_ROLE_RELATE T2
+                                                               WHERE T2.R_TYPE = #{userRType}
+                                                                     AND T2.R_CODE1 = #{userCode}) tab1)) tab2)
+    </select>
+
+    <select id="selectPage4Parameter" resultType="com.joyin.fyzg.wyy.entity.rbac.MenuPageParameterDO">
+        SELECT T.*
+        FROM SYS_RBAC_MENU_PAGE_PARAMETER T
+        WHERE T.R_ID IN (SELECT R_ID
+                         FROM (SELECT DISTINCT T1.R_CODE1
+                               FROM SYS_RBAC_ROLE_RELATE T1
+                               WHERE T1.R_TYPE = #{pageRType}
+                                     AND T1.ROLE_CODE IN (SELECT ROLE_CODE
+                                                         FROM (SELECT T2.ROLE_CODE
+                                                               FROM SYS_RBAC_ROLE_RELATE T2
+                                                               WHERE T2.R_TYPE = #{userRType}
+                                                                     AND T2.R_CODE1 = #{userCode}) tab1)) tab2)
+    </select>
+
+    <select id="selectPage4Action" resultType="com.joyin.fyzg.wyy.entity.rbac.MenuPageActionDO">
+        SELECT T.*
+        FROM SYS_RBAC_MENU_PAGE_ACTION T
+        WHERE T.R_ID IN (SELECT R_ID
+                         FROM (SELECT DISTINCT T1.R_CODE1
+                               FROM SYS_RBAC_ROLE_RELATE T1
+                               WHERE T1.R_TYPE = #{pageRType}
+                                     AND T1.ROLE_CODE IN (SELECT ROLE_CODE
+                                                         FROM (SELECT T2.ROLE_CODE
+                                                               FROM SYS_RBAC_ROLE_RELATE T2
+                                                               WHERE T2.R_TYPE = #{userRType}
+                                                                     AND T2.R_CODE1 = #{userCode}) tab1)) tab2)
+    </select>
+
+    <select id="selectRelate4Action" resultType="com.joyin.fyzg.wyy.entity.rbac.RoleRelateDO">
+        SELECT DISTINCT T.*
+        FROM SYS_RBAC_ROLE_RELATE T
+        WHERE T.R_TYPE = #{pageActionRType}
+              AND T.ROLE_CODE IN (SELECT ROLE_CODE
+                                  FROM (SELECT T1.ROLE_CODE
+                                        FROM SYS_RBAC_ROLE_RELATE T1
+                                        WHERE T1.R_TYPE = #{userRType}
+                                              AND T1.R_CODE1 = #{userCode}) tab2)
+    </select>
+
+    <!--<select id="selectRelate4Common" resultType="com.joyin.fyzg.pfyh.entity.rbac.RoleRelateDO">-->
+        <!--SELECT DISTINCT T.*-->
+        <!--FROM SYS_RBAC_ROLE_RELATE T-->
+        <!--WHERE T.R_TYPE = #{rType}-->
+        <!--<if test="rCode1 != null and rCode1 != ''">-->
+            <!--AND T.R_CODE1 = #{rCode1}-->
+        <!--</if>-->
+        <!--<if test="rCode2 != null and rCode2 != ''">-->
+            <!--AND T.R_CODE2 = #{rCode2}-->
+        <!--</if>-->
+        <!--<if test="rCode3 != null and rCode3 != ''">-->
+            <!--AND T.R_CODE3 = #{rCode3}-->
+        <!--</if>-->
+        <!--<if test="rCode4 != null and rCode4 != ''">-->
+            <!--AND T.R_CODE4 = #{rCode4}-->
+        <!--</if>-->
+        <!--<if test="rCode5 != null and rCode5 != ''">-->
+            <!--AND T.R_CODE5 = #{rCode5}-->
+        <!--</if>-->
+    <!--</select>-->
+
+    <!--<select id="selectRelate4PageAction" resultType="com.joyin.fyzg.pfyh.entity.rbac.RoleRelateDO">-->
+        <!--SELECT DISTINCT T1.*-->
+        <!--FROM SYS_RBAC_ROLE_RELATE T1-->
+            <!--INNER JOIN SYS_RBAC_MENU_PAGE_ACTION T2-->
+                <!--ON T1.R_CODE1 = T2.PAGE_ID-->
+                   <!--AND T1.R_CODE2 = T2.R_ID-->
+        <!--WHERE T1.R_TYPE = #{rType}-->
+              <!--AND T2.ACT_CODE = #{actCode}-->
+              <!--AND T2.PAGE_ID = #{pageId}-->
+    <!--</select>-->
+</mapper>

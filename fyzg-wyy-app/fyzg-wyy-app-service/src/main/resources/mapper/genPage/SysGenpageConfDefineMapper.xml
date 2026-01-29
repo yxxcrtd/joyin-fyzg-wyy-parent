@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.genPage.SysGenpageConfDefineMapper">
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.genPage.SysGenpageConfDefine">
+        <id property="id" column="ID" jdbcType="DECIMAL"/>
+        <result property="pageId" column="PAGE_ID" jdbcType="VARCHAR"/>
+        <result property="showWindow" column="SHOW_WINDOW" jdbcType="VARCHAR"/>
+        <result property="windowType" column="WINDOW_TYPE" jdbcType="VARCHAR"/>
+        <result property="windowPrompt" column="WINDOW_PROMPT" jdbcType="VARCHAR"/>
+        <result property="windowId" column="WINDOW_ID" jdbcType="DECIMAL"/>
+        <result property="showTitle" column="SHOW_TITLE" jdbcType="VARCHAR"/>
+        <result property="showTitleEva" column="SHOW_TITLE_EVA" jdbcType="VARCHAR"/>
+        <result property="showTitleOpr" column="SHOW_TITLE_OPR" jdbcType="VARCHAR"/>
+        <result property="showPrompt" column="SHOW_PROMPT" jdbcType="VARCHAR"/>
+        <result property="promptExpand" column="PROMPT_EXPAND" jdbcType="VARCHAR"/>
+        <result property="promptTitle" column="PROMPT_TITLE" jdbcType="VARCHAR"/>
+        <result property="promptInifo" column="PROMPT_INIFO" jdbcType="VARCHAR"/>
+        <result property="showCollectInfo" column="SHOW_COLLECT_INFO" jdbcType="VARCHAR"/>
+        <result property="collectInfoId" column="COLLECT_INFO_ID" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,PAGE_ID,SHOW_WINDOW,
+        WINDOW_TYPE,WINDOW_PROMPT,WINDOW_ID,
+        SHOW_TITLE,SHOW_TITLE_EVA,SHOW_TITLE_OPR,
+        SHOW_PROMPT,PROMPT_EXPAND,PROMPT_TITLE,PROMPT_INIFO,
+        SHOW_COLLECT_INFO,COLLECT_INFO_ID,CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_CONF_DEFINE
+        where  ID = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_GENPAGE_CONF_DEFINE
+        where  ID = #{id,jdbcType=DECIMAL}
+    </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageConfDefine" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_CONF_DEFINE
+        ( PAGE_ID,SHOW_WINDOW
+        ,WINDOW_TYPE,WINDOW_PROMPT,WINDOW_ID
+        ,SHOW_TITLE,SHOW_TITLE_EVA,SHOW_TITLE_OPR
+        ,SHOW_PROMPT,PROMPT_EXPAND,PROMPT_TITLE,PROMPT_INIFO
+        ,SHOW_COLLECT_INFO,COLLECT_INFO_ID,CREATE_TIME
+        ,UPDATE_TIME)
+        values (#{pageId,jdbcType=VARCHAR},#{showWindow,jdbcType=VARCHAR}
+        ,#{windowType,jdbcType=VARCHAR},#{windowPrompt,jdbcType=VARCHAR},#{windowId,jdbcType=DECIMAL}
+        ,#{showTitle,jdbcType=VARCHAR},#{showTitleEva,jdbcType=VARCHAR},#{showTitleOpr,jdbcType=VARCHAR}
+        ,#{showPrompt,jdbcType=VARCHAR},#{promptExpand,jdbcType=VARCHAR},#{promptTitle,jdbcType=VARCHAR}
+        ,#{promptInifo,jdbcType=VARCHAR},#{showCollectInfo,jdbcType=VARCHAR},#{collectInfoId,jdbcType=VARCHAR}
+        ,#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageConfDefine" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_CONF_DEFINE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="pageId != null">PAGE_ID,</if>
+            <if test="showWindow != null">SHOW_WINDOW,</if>
+            <if test="windowType != null">WINDOW_TYPE,</if>
+            <if test="windowPrompt != null">WINDOW_PROMPT,</if>
+            <if test="windowId != null">WINDOW_ID,</if>
+            <if test="showTitle != null">SHOW_TITLE,</if>
+            <if test="showTitleEva != null">SHOW_TITLE_EVA,</if>
+            <if test="showTitleOpr != null">SHOW_TITLE_OPR,</if>
+            <if test="showPrompt != null">SHOW_PROMPT,</if>
+            <if test="promptExpand != null">PROMPT_EXPAND,</if>
+            <if test="promptTitle != null">PROMPT_TITLE,</if>
+            <if test="promptInifo != null">PROMPT_INIFO,</if>
+            <if test="showCollectInfo != null">SHOW_COLLECT_INFO,</if>
+            <if test="collectInfoId != null">COLLECT_INFO_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=DECIMAL},</if>
+            <if test="pageId != null">#{pageId,jdbcType=VARCHAR},</if>
+            <if test="showWindow != null">#{showWindow,jdbcType=VARCHAR},</if>
+            <if test="windowType != null">#{windowType,jdbcType=VARCHAR},</if>
+            <if test="windowPrompt != null">#{windowPrompt,jdbcType=VARCHAR},</if>
+            <if test="windowId != null">#{windowId,jdbcType=DECIMAL},</if>
+            <if test="showTitle != null">#{showTitle,jdbcType=VARCHAR},</if>
+            <if test="showTitleEva != null">#{showTitleEva,jdbcType=VARCHAR},</if>
+            <if test="showTitleOpr != null">#{showTitleOpr,jdbcType=VARCHAR},</if>
+            <if test="showPrompt != null">#{showPrompt,jdbcType=VARCHAR},</if>
+            <if test="promptExpand != null">#{promptExpand,jdbcType=VARCHAR},</if>
+            <if test="promptTitle != null">#{promptTitle,jdbcType=VARCHAR},</if>
+            <if test="promptInifo != null">#{promptInifo,jdbcType=VARCHAR},</if>
+            <if test="showCollectInfo != null">#{showCollectInfo,jdbcType=VARCHAR},</if>
+            <if test="collectInfoId != null">#{collectInfoId,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageConfDefine">
+        update SYS_GENPAGE_CONF_DEFINE
+        <set>
+            <if test="pageId != null">
+                PAGE_ID = #{pageId,jdbcType=VARCHAR},
+            </if>
+            <if test="showWindow != null">
+                SHOW_WINDOW = #{showWindow,jdbcType=VARCHAR},
+            </if>
+            <if test="windowType != null">
+                WINDOW_TYPE = #{windowType,jdbcType=VARCHAR},
+            </if>
+            <if test="windowPrompt != null">
+                WINDOW_PROMPT = #{windowPrompt,jdbcType=VARCHAR},
+            </if>
+            <if test="windowId != null">
+                WINDOW_ID = #{windowId,jdbcType=DECIMAL},
+            </if>
+            <if test="showTitle != null">
+                SHOW_TITLE = #{showTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="showTitleEva != null">
+                SHOW_TITLE_EVA = #{showTitleEva,jdbcType=VARCHAR},
+            </if>
+            <if test="showTitleOpr != null">
+                SHOW_TITLE_OPR = #{showTitleOpr,jdbcType=VARCHAR},
+            </if>
+            <if test="showPrompt != null">
+                SHOW_PROMPT = #{showPrompt,jdbcType=VARCHAR},
+            </if>
+            <if test="promptExpand != null">
+                PROMPT_EXPAND = #{promptExpand,jdbcType=VARCHAR},
+            </if>
+            <if test="promptTitle != null">
+                PROMPT_TITLE = #{promptTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="promptInifo != null">
+                PROMPT_INIFO = #{promptInifo,jdbcType=VARCHAR},
+            </if>
+            <if test="showCollectInfo != null">
+                SHOW_COLLECT_INFO = #{showCollectInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="collectInfoId != null">
+                COLLECT_INFO_ID = #{collectInfoId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+
+        </set>
+        where   ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageConfDefine">
+        update SYS_GENPAGE_CONF_DEFINE
+        set
+            PAGE_ID =  #{pageId,jdbcType=VARCHAR},
+            SHOW_WINDOW =  #{showWindow,jdbcType=VARCHAR},
+            WINDOW_TYPE =  #{windowType,jdbcType=VARCHAR},
+            WINDOW_PROMPT =  #{windowPrompt,jdbcType=VARCHAR},
+            WINDOW_ID =  #{windowId,jdbcType=DECIMAL},
+            SHOW_TITLE =  #{showTitle,jdbcType=VARCHAR},
+            SHOW_TITLE_EVA =  #{showTitleEva,jdbcType=VARCHAR},
+            SHOW_TITLE_OPR =  #{showTitleOpr,jdbcType=VARCHAR},
+            SHOW_PROMPT =  #{showPrompt,jdbcType=VARCHAR},
+            PROMPT_EXPAND =  #{promptExpand,jdbcType=VARCHAR},
+             PROMPT_TITLE =  #{promptTitle,jdbcType=VARCHAR},
+            PROMPT_INIFO =  #{promptInifo,jdbcType=VARCHAR},
+            SHOW_COLLECT_INFO =  #{showCollectInfo,jdbcType=VARCHAR},
+            COLLECT_INFO_ID =  #{collectInfoId,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME =  #{updateTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <select id="selectByPageId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_CONF_DEFINE
+        <if test="pageId != null">
+            where  PAGE_ID = #{pageId,jdbcType=VARCHAR}
+        </if>
+        order by PAGE_ID
+    </select>
+</mapper>

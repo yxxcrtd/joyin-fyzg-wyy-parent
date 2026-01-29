@@ -1,0 +1,16 @@
+package ${packageName}.mapper${modulePackageName};
+
+import com.joyin.fyzg.SuperMapper;
+import ${packageName}.entity${modulePackageName}.${ClassName}DO;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * ${tableName.toUpperCase()}表的DAO层类
+ * @author 工具生成
+ * @version 1.0
+ * @since
+ */
+@Mapper
+public interface ${ClassName}Mapper extends SuperMapper<${ClassName}DO> {
+
+}

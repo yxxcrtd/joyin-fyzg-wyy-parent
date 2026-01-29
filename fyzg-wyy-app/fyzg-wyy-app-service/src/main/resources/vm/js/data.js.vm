@@ -1,0 +1,33 @@
+export const tableParams = {
+  tableId: '${ClassName}-TableId',
+  columns: [
+    {
+      type: 'checkbox',
+      width: '60px',
+      align:'center',
+      fixed: 'left' 
+    },
+    #foreach($column in $columns)
+    #if($parentheseIndex != -1)
+    #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+    #else
+    #set($comment=$column.columnComment)
+    #end
+    {
+      field: '${column.javaField}',
+      title: '${comment}',
+      #if($column.list && $column.htmlType == "datetime")
+          dataType:'datetime'
+      #elseif($column.list && $column.htmlType == "date")
+          dataType:'date'
+      #end
+      #if($column.list && "" != $column.dictType)
+          dictName:'${column.dictType}'
+      #end
+    },
+    #end
+    { title: '操作', width: '380px', field: 'action', fixed: 'right', slots: { default: 'action_default' } }
+  ],
+  dataUrl: '/${ClassName}/listAll',
+  showFooter:false
+}

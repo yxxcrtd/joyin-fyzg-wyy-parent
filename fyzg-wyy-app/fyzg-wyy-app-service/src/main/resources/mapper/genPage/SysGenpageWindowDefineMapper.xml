@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joyin.fyzg.wyy.mapper.genPage.SysGenpageWindowDefineMapper">
+
+    <resultMap id="BaseResultMap" type="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowDefine">
+            <id property="id" column="ID" jdbcType="DECIMAL"/>
+            <result property="title" column="TITLE" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,TITLE,CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from SYS_GENPAGE_WINDOW_DEFINE
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from SYS_GENPAGE_WINDOW_DEFINE
+        where  ID = #{id,jdbcType=DECIMAL} 
+    </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowDefine" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_WINDOW_DEFINE
+        ( TITLE,CREATE_TIME
+        ,UPDATE_TIME)
+        values (#{title,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowDefine" useGeneratedKeys="true">
+        insert into SYS_GENPAGE_WINDOW_DEFINE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID,</if>
+                <if test="title != null">TITLE,</if>
+                <if test="createTime != null">CREATE_TIME,</if>
+                <if test="updateTime != null">UPDATE_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=DECIMAL},</if>
+                <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowDefine">
+        update SYS_GENPAGE_WINDOW_DEFINE
+        <set>
+                <if test="title != null">
+                    TITLE = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updateTime != null">
+                    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.joyin.fyzg.wyy.entity.genPage.SysGenpageWindowDefine">
+        update SYS_GENPAGE_WINDOW_DEFINE
+        set 
+            TITLE =  #{title,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME =  #{updateTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=DECIMAL} 
+    </update>
+
+    <select id="selectMaxId"  resultType="java.lang.Long">
+        select
+        max(id) as id
+        from SYS_GENPAGE_WINDOW_DEFINE
+    </select>
+</mapper>
